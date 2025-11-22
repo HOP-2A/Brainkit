@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Teacher {
+  id               String       @id @default(nanoid())
+  email          String      @unique
+  password       String
+  name           String
+  createdClasses Classroom[] @relation("TeacherClasses")
+  createdQuizzes Quiz[]      @relation("TeacherQuizzes")
+  createdAt      DateTime    @default(now())
+}
+ 
+model Student {
+  id             String       @id @default(nanoid())
+  email        String               @unique
+  password     String
+  name         String
+  classRoomId  String
+  classRoom    Classroom            @relation(fields: [classRoomId], references: [id])
+  quizAttempts StudentQuizAttempt[]
+  createdAt    DateTime             @default(now())
+}
+ 
+model Classroom {
+  id        String       @id @default(nanoid())
+  name      String
+  code      String    @unique
+  teacherId String
+  teacher   Teacher   @relation("TeacherClasses", fields: [teacherId], references: [id])
+  students  Student[]
+  quizzes   Quiz[]
+  createdAt DateTime  @default(now())
+}
+ 
+model Quiz {
+  id            String       @id @default(nanoid())
+  title       String
+  classroomId String
+  classroom   Classroom            @relation(fields: [classroomId], references: [id])
+  creatorId   String
+  creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
+  questions   QuizQuestion[]
+  attempts    StudentQuizAttempt[]
+  createdAt   DateTime             @default(now())
+}
+ 
+model QuizQuestion {
+  id             String       @id @default(nanoid())
+  question       String
+  quizId         String
+  quiz           Quiz            @relation(fields: [quizId], references: [id])
+  options        QuizOption[]
+  createdAt      DateTime        @default(now())
+  studentAnswers StudentAnswer[]
+}
+ 
+model QuizOption {
+  id               String       @id @default(nanoid())
+  text           String
+  isCorrect      Boolean         @default(false)
+  questionId     String
+  question       QuizQuestion    @relation(fields: [questionId], references: [id])
+  studentAnswers StudentAnswer[]
+}
+ 
+model StudentQuizAttempt {
+  id          String       @id @default(nanoid())
+  studentId String
+  quizId    String
+  student   Student @relation(fields: [studentId], references: [id])
+  quiz      Quiz    @relation(fields: [quizId], references: [id])
+ 
+  answers   StudentAnswer[]
+  score     Int             @default(0)
+  createdAt DateTime        @default(now())
+}
+ 
+model StudentAnswer {
+  id         String       @id @default(nanoid())
+  attemptId  String
+  questionId String
+  optionId   String
+ 
+  attempt  StudentQuizAttempt @relation(fields: [attemptId], references: [id])
+  question QuizQuestion       @relation(fields: [questionId], references: [id])
+  option   QuizOption         @relation(fields: [optionId], references: [id])
+}
