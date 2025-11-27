@@ -62,14 +62,14 @@ model Quiz {
   creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
   questions   QuizQuestion[]
   attempts    StudentQuizAttempt[]
-  createdAt   DateTime             @default(now())
+  createdAt   DateTime            @default(now())
 }
 
 model QuizQuestion {
   id             String          @id @default(nanoid())
   question       String
   quizId         String
-  quiz           Quiz            @relation(fields: [quizId], references: [id])
+  quiz           Quiz?            @relation(fields: [quizId], references: [id])
   options        QuizOption[]
   createdAt      DateTime        @default(now())
   studentAnswers StudentAnswer[]
