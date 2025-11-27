@@ -3,20 +3,26 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, creatorId, classroomId } = body;
-    if (!title)
-      return NextResponse.json({ error: "Title heregtei" }, { status: 401 });
+    const { question, quizId } = body;
+    if (!question)
+      return NextResponse.json(
+        { error: "question cannot be empty" },
+        { status: 401 }
+      );
+    if (!quizId)
+      return NextResponse.json(
+        { error: "Ymar quiztei holbootoigoo tavij ugnu uu" },
+        { status: 401 }
+      );
     else {
-      await prisma.quiz.create({
+      await prisma.quizQuestion.create({
         data: {
-          title,
-          creatorId,
-          classroomId,
+          question,
+          quizId,
         },
       });
-
       return NextResponse.json(
-        { message: "successfully created quiz" },
+        { message: "successfully created question" },
         { status: 200 }
       );
     }
