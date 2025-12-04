@@ -30,18 +30,28 @@ export async function POST(req: Request) {
   const user = evt.data as UserJSON;
 
   const email = user.email_addresses?.[0]?.email_address ?? null;
-  const phoneNumber = user.phone_numbers?.[0]?.phone_number ?? null;
   const firstName = user.first_name || "";
 
   /* ------------------------- USER CREATED ------------------------ */
   if (eventType === "user.created") {
-    await prisma.teacher.create({
-      data: {
-        clerkId: user.id,
-        email,
-        name: firstName,
-      },
-    });
+    if (user.public_metadata.role === "TEACHER") {
+      await prisma.teacher.create({
+        data: {
+          clerkId: user.id,
+          email,
+          name: firstName,
+        },
+      });
+    }
+    if (user.public_metadata.role === "STUDENT") {
+      await prisma.student.create({
+        data: {
+          clerkId: user.id,
+          email,
+          name: firstName,
+        },
+      });
+    }
   }
 
   return NextResponse.json({ ok: true });
