@@ -17,18 +17,18 @@ datasource db {
 model Teacher {
   id String @id @default(nanoid())
 
-  email          String          @unique
+  email          String      @unique
   name           String
-  clerkId String
-  createdClasses Classroom[]     @relation("TeacherClasses")
-  createdQuizzes Quiz[]          @relation("TeacherQuizzes")
-  createdAt      DateTime        @default(now())
+  clerkId        String
+  createdClasses Classroom[] @relation("TeacherClasses")
+  createdQuizzes Quiz[]      @relation("TeacherQuizzes")
+  createdAt      DateTime    @default(now())
 }
 
 model Student {
   id           String               @id @default(nanoid())
   email        String               @unique
-  password     String
+  clerkId      String
   name         String
   classRoomId  String?
   classRoom    Classroom?           @relation(fields: [classRoomId], references: [id])
@@ -61,14 +61,14 @@ model Quiz {
   creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
   questions   QuizQuestion[]
   attempts    StudentQuizAttempt[]
-  createdAt   DateTime            @default(now())
+  createdAt   DateTime             @default(now())
 }
 
 model QuizQuestion {
   id             String          @id @default(nanoid())
   question       String
   quizId         String
-  quiz           Quiz?            @relation(fields: [quizId], references: [id])
+  quiz           Quiz?           @relation(fields: [quizId], references: [id])
   options        QuizOption[]
   createdAt      DateTime        @default(now())
   studentAnswers StudentAnswer[]
