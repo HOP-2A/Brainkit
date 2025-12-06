@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Button } from "@/components/ui/button";
 import "./globals.css";
 import {
   ClerkProvider,
@@ -38,20 +40,11 @@ export default function RootLayout({
           <header className="flex justify-end items-center p-4 gap-4 h-16">
             <SignedOut>
               <SignInButton />
-              <SignUpButton unsafeMetadata={{ role: "STUDENT" }}>
-                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up Student
-                </button>
-              </SignUpButton>
+              <Link href="sign-up">
+                <Button>Sign Up</Button>
+              </Link>
             </SignedOut>
 
-            <SignedOut>
-              <SignUpButton unsafeMetadata={{ role: "TEACHER" }}>
-                <button className="bg-[#6c47ff] text-ceramic-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up Teacher
-                </button>
-              </SignUpButton>
-            </SignedOut>
             <SignedIn>
               <UserButton />
             </SignedIn>
@@ -62,3 +55,4 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+//dont show these two buttons when i am in /sign-up or /login

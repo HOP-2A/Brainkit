@@ -1,7 +1,7 @@
 // import { prisma } from "@/lib/db";
 // import { hash, compare } from "bcrypt";
 // import bcrypt from "bcryptjs";
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 
 // export async function POST(req: Request) {
 //   try {
@@ -40,6 +40,6 @@ import { NextResponse } from "next/server";
 //   }
 // }
 
-export const GET = () => {
-  return NextResponse.json("gg");
-};
+// export const GET = () => {
+//   return NextResponse.json("gg");
+// };
