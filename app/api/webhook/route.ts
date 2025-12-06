@@ -34,6 +34,10 @@ export async function POST(req: Request) {
 
   /* ------------------------- USER CREATED ------------------------ */
   if (eventType === "user.created") {
+    console.log(user, "USER +++++++++++++");
+    console.log(user.unsafe_metadata, "GGGGG");
+    const role = new URL(event.data.created_at_url).searchParams.get("role");
+
     if (user.public_metadata.role === "TEACHER") {
       await prisma.teacher.create({
         data: {

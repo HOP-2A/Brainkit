@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Button } from "@/components/ui/button";
 import "./globals.css";
 
 import {
@@ -37,30 +39,17 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <header className="flex justify-between items-center p-4 h-16 mt-6 mx-6">
-            <div className="bg-[#4169E1] text-gray-100 px-6 py-3 rounded-lg text-4xl font-bold shadow-[0_4px_0_#27408B]">
-              BRAINKET
-            </div>
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <SignInButton />
+              <Link href="sign-up">
+                <Button>Sign Up</Button>
+              </Link>
+            </SignedOut>
 
-            <div className="flex gap-4 items-center">
-              <SignedOut>
-                <SignUpButton>
-                  <button
-                    className="bg-[#4169E1] text-white rounded-2xl font-semibold 
-                    text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer
-                    shadow-[0_4px_0_#27408B] transition-all
-                    hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
-                    active:translate-y-1 active:shadow-[0_1px_0_#27408B]"
-                  >
-                    Sign Up
-                  </button>
-                </SignUpButton>
-              </SignedOut>
-
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </div>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
           </header>
 
           <div className="flex justify-center mt-8">
@@ -85,3 +74,4 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+//dont show these two buttons when i am in /sign-up or /login
