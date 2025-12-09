@@ -9,9 +9,10 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
-  SignUpButton,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
+import { useAuth } from "./api/providers/useAuth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
