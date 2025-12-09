@@ -37,21 +37,14 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <header className="flex justify-between items-center p-4 h-16 mt-6 mx-4 sm:mx-8 md:mx-16 lg:mx-20">
-            <div
-              className="bg-[#8598FF] text-white px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-xl text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wider
-                shadow-[0_6px_0_#27408B] hover:scale-105 transition-transform
-                text-center drop-shadow-lg"
-            >
-              BRAINKET
-            </div>
-
+          {/* <header className="flex justify-between items-center p-4 h-16 mt-6 mx-4 sm:mx-8 md:mx-16 lg:mx-20">
+           
             <div className="flex gap-2 sm:gap-3 md:gap-4 items-center">
               <SignedIn>
                 <UserButton />
               </SignedIn>
             </div>
-          </header>
+          </header> */}
 
           {children}
         </body>
