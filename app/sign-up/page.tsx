@@ -10,13 +10,13 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [error, setError] = useState<string | null>(null); // <-- add state for errors
+  const [error, setError] = useState<string | null>(null);
 
   const { user, isSignedIn } = useUser();
   const router = useRouter();
 
   const handleSubmit = async () => {
-    setError(null); // reset error on submit
+    setError(null);
 
     const res = await fetch("/api/signUp", {
       method: "POST",
@@ -30,13 +30,13 @@ export default function SignUpPage() {
 
     const data = await res.json();
 
-    // if (!res.ok) {
-    //   // if the response is an error, show it
-    //   setError(data.error || "Something went wrong");
-    // } else {
-    //   // successful sign up, you can redirect or show success
-    //   router.push("/");
-    // }
+    if (!res.ok) {
+      // if the response is an error, show it
+      setError(data.error || "Something went wrong");
+    } else {
+      // successful sign up, you can redirect or show success
+      router.push("/");
+    }
   };
 
   useEffect(() => {
