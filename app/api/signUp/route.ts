@@ -56,7 +56,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-export const GET = () => {
-  return NextResponse.json("gg");
-};

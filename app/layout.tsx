@@ -74,4 +74,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-//dont show these two buttons when i am in /sign-up or /login

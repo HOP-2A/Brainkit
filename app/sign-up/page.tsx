@@ -30,13 +30,13 @@ export default function SignUpPage() {
 
     const data = await res.json();
 
-    if (!res.ok) {
-      // if the response is an error, show it
-      setError(data.error || "Something went wrong");
-    } else {
-      // successful sign up, you can redirect or show success
-      router.push("/");
-    }
+    // if (!res.ok) {
+    //   // if the response is an error, show it
+    //   setError(data.error || "Something went wrong");
+    // } else {
+    //   // successful sign up, you can redirect or show success
+    //   router.push("/");
+    // }
   };
 
   useEffect(() => {
