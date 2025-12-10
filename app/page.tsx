@@ -1,6 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useUser, SignInButton } from "@clerk/nextjs";
+
 import { useEffect } from "react";
 
 const Page = () => {
@@ -13,6 +12,14 @@ const Page = () => {
     }
   }, [isSignedIn]);
 
+
+  const clerkId = clerkUser?.id;
+
+  console.log(clerkId, "awe");
+
+  const { user } = useAuth(clerkId ?? "");
+
+  console.log(user, "qw");
   return (
     <div>
       <header className="flex justify-between items-center mt-8 sm:mx-8 md:mx-16 lg:mx-20">
