@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-  import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { SignInButton, useUser } from "@clerk/nextjs";
 const Page = () => {
-<<<<<<< HEAD
-  const { user, isSignedIn } = useUser();
-  console.log(user);
-=======
   const router = useRouter();
   const { isSignedIn } = useUser();
 
@@ -17,9 +13,6 @@ const Page = () => {
     }
   }, [isSignedIn]);
 
-
-
->>>>>>> f111c70 (init)
   return (
     <div>
       <header className="flex justify-between items-center mt-8 sm:mx-8 md:mx-16 lg:mx-20">
