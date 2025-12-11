@@ -2,8 +2,15 @@
 
 import { useState, useEffect } from "react";
 
+type TeacherType = {
+  id: string;
+  email: string;
+  name: string;
+  clerkId: string;
+};
+
 export const useAuth = (clerkId: string | null) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<TeacherType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 

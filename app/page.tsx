@@ -1,10 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
-
+import { useRouter } from "next/navigation";
+import { SignInButton, useUser } from "@clerk/nextjs";
 const Page = () => {
-  const { user, isSignedIn } = useUser();
-  console.log(user);
+  const router = useRouter();
+  const { isSignedIn } = useUser();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/home-page");
+    }
+  }, [isSignedIn]);
+
   return (
     <div>
       <header className="flex justify-between items-center mt-8 sm:mx-8 md:mx-16 lg:mx-20">
