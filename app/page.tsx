@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 const Page = () => {
   const { user, isSignedIn } = useUser();
-
+  console.log(user);
   return (
     <div className="flex justify-center mt-20 text-3xl font-bold">
       {isSignedIn ? (
