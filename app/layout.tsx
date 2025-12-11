@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Button } from "@/components/ui/button";
 import "./globals.css";
 
 import {
@@ -9,9 +7,10 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
-  SignUpButton,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
+import { useAuth } from "./api/providers/useAuth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,3 +75,4 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
+

@@ -19,7 +19,7 @@ model Teacher {
 
   email          String      @unique
   name           String
-  clerkId        String
+  clerkId        String      @unique
   createdClasses Classroom[] @relation("TeacherClasses")
   createdQuizzes Quiz[]      @relation("TeacherQuizzes")
   createdAt      DateTime    @default(now())
@@ -28,7 +28,7 @@ model Teacher {
 model Student {
   id           String               @id @default(nanoid())
   email        String               @unique
-  clerkId      String
+  clerkId      String               @unique
   name         String
   classRoomId  String?
   classRoom    Classroom?           @relation(fields: [classRoomId], references: [id])
