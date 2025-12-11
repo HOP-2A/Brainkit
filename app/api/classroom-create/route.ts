@@ -23,11 +23,8 @@ export async function POST(req: Request) {
         code,
       },
     });
-<<<<<<< HEAD
-=======
 
     return NextResponse.json({ message: createdClassroomSet }, { status: 200 });
->>>>>>> bfd4061 (classroom create fronted, vercel blob nemsen)
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: err }, { status: 500 });
