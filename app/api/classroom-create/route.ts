@@ -6,18 +6,30 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { title, description, coverImg, teacherId, name, code } = body;
 
-    const createdQuizSet = await prisma.classroom.create({
+    if (!title || !teacherId || !name || !code) {
+      return NextResponse.json(
+        { message: "missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    const createdClassroomSet = await prisma.classroom.create({
       data: {
         title,
-        description,
-        coverImg,
+        description: description ?? "",
+        coverImg: coverImg ?? "",
         teacherId,
         name,
         code,
       },
     });
+<<<<<<< HEAD
+=======
+
+    return NextResponse.json({ message: createdClassroomSet }, { status: 200 });
+>>>>>>> bfd4061 (classroom create fronted, vercel blob nemsen)
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ message: err }, { status: 401 });
+    return NextResponse.json({ message: err }, { status: 500 });
   }
 }
