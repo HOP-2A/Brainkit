@@ -8,22 +8,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageIcon, UploadCloud, Loader2 } from "lucide-react";
 import { SideBar } from "../_components/SideBar";
-
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuth } from "@/providers/useAuth";
 
+type ClassroomType = {
+  id: string;
+};
 const Page = () => {
   const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
   const { user } = useAuth(clerkId ?? "");
 
-  console.log(user?.id, "qwe");
+  const [classroom, setClassroom] = useState<ClassroomType>();
   const [inputValues, setInputValues] = useState({
     title: "",
     description: "",
     className: "",
     classCode: "",
   });
+
+  const { push } = useRouter();
 
   const hangleInputs = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -67,11 +72,18 @@ const Page = () => {
     console.log(response);
     if (response.ok) {
       toast.success("Classroom successfully created!");
+
+      const res = await response.json();
+      setClassroom(res.message);
+      if (classroom) {
+        push(`/quiz-create/${classroom.id}`);
+      }
     } else {
       toast.error("Please use a different class code.");
     }
   };
 
+  console.log(classroom);
   return (
     <div className="min-h-screen flex bg-[#f4f6ff]">
       <SideBar />

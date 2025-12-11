@@ -10,8 +10,9 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { useAuth } from "./api/providers/useAuth";
+
 import { Toaster } from "sonner";
+import Link from "next/link";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
