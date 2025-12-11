@@ -6,14 +6,15 @@ import { upload } from "@vercel/blob/client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../api/providers/useAuth";
+import { SideBar } from "../_components/SideBar";
 
 const Page = () => {
-  const { user:clerkUser } = useUser();
+  const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
 
-   const {user}   = useAuth(clerkId ?? "")
+  console.log(clerkUser);
+  const { user } = useAuth(clerkId ?? "");
 
-   
   const [inputValues, setInputValues] = useState({
     title: "",
     description: "",
@@ -47,70 +48,91 @@ const Page = () => {
     setImageUrl(uploaded.url);
   };
 
-  const createClass = async() => {
+  const createClass = async () => {
     const response = await fetch("/api/classroom-create", {
-      method:"POST",
-      headers : {
-        "Content-type":"application/json"
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
       },
 
-      body : JSON.stringify({
-        title:inputValues.title,
-        description:inputValues.description,
-        coverImg:imageUrl,
-        teacherId: ,
-        name:inputValues.className,
-        code : inputValues.classCode
-
-      })
-
-    })
-  }
+      body: JSON.stringify({
+        title: inputValues.title,
+        description: inputValues.description,
+        coverImg: imageUrl,
+        teacherId: "p6W6kKgN_YmoA9_lKDLJv",
+        name: inputValues.className,
+        code: inputValues.classCode,
+      }),
+    });
+  };
 
   console.log(inputValues.className, "qw");
   return (
-    <div>
-      <div>
-        <label className="font-semibold text-gray-700">
-          Upload an cover image
-        </label>
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handleFile}
-          className="w-full cursor-pointer"
-        />
-        <Button onClick={uploadedImg}>add</Button>
+    <div className="min-h-screen flex bg-[#f4f6ff]">
+      <SideBar />
+      <div className="flex-1 p-6">
+        <div className="flex col gap-10">
+          <div className="w-[70px] h-[100px] border-dashed border-2 rounded-xl pt-1.5 p-2">
+            <div className="font-semibold text-gray-700">
+              Upload an cover image (optional)
+            </div>
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleFile}
+              className="w-[15px] cursor-pointer"
+            />
+            <button
+              onClick={uploadedImg}
+              className="bg-[#4169E1] text-white px-4 py-2 rounded-xl font-bold shadow-[0_4px_0_#27408B]"
+            >
+              add
+            </button>
+          </div>
+          <div>
+            {imageUrl ? (
+              <img src={imageUrl} className="w-[200px] h-[200px]" />
+            ) : (
+              <div>ta zurag upload hiigeegui baina </div>
+            )}
+            <div>
+              <div>required</div>
+              <Input
+                placeholder="write a classroom title"
+                value={inputValues.title}
+                name="title"
+                onChange={(e) => hangleInputs(e)}
+              />
+              <div>description optional</div>
+              <Input
+                placeholder="write a classroom description"
+                value={inputValues.description}
+                name="description"
+                onChange={(e) => hangleInputs(e)}
+              ></Input>
+              <div>required</div>
+              <Input
+                placeholder="write a classroom name"
+                value={inputValues.className}
+                name="className"
+                onChange={(e) => hangleInputs(e)}
+              ></Input>
+              <div>required </div>
+              <Input
+                placeholder="write a classroom enter code ta ooroo zohiono"
+                value={inputValues.classCode}
+                name="classCode"
+                onChange={(e) => hangleInputs(e)}
+              ></Input>
+            </div>
+          </div>
+
+          <Button onClick={createClass}>create a classroom</Button>
+        </div>
       </div>
-      <div>
-        <Input
-          placeholder="write a classroom title"
-          value={inputValues.title}
-          name="title"
-          onChange={(e) => hangleInputs(e)}
-        />
-        <Input
-          placeholder="write a classroom description"
-          value={inputValues.description}
-          name="description"
-          onChange={(e) => hangleInputs(e)}
-        ></Input>
-        <Input
-          placeholder="write a classroom name"
-          value={inputValues.className}
-          name="className"
-          onChange={(e) => hangleInputs(e)}
-        ></Input>
-        <Input
-          placeholder="write a classroom enter code"
-          value={inputValues.classCode}
-          name="classCode"
-          onChange={(e) => hangleInputs(e)}
-        ></Input>
-      </div>
-      <Button onClick={createClass}>create a classroom</Button>
     </div>
   );
 };
 
 export default Page;
+
