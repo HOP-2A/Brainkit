@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageIcon, UploadCloud, Loader2 } from "lucide-react";
 import { SideBar } from "../_components/SideBar";
-import { useAuth } from "../api/providers/useAuth";
+
 import { toast } from "sonner";
+import { useAuth } from "../providers/useAuth";
 const Page = () => {
   const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
