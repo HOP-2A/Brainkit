@@ -16,8 +16,6 @@ export async function POST(req: Request) {
         code,
       },
     });
-
-    return NextResponse.json(createdQuizSet, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json({ message: err }, { status: 401 });

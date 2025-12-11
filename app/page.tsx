@@ -3,23 +3,8 @@
 import { useEffect } from "react";
 
 const Page = () => {
-  const router = useRouter();
-  const { isSignedIn } = useUser();
-
-  useEffect(() => {
-    if (isSignedIn) {
-      router.push("/home-page");
-    }
-  }, [isSignedIn]);
-
-
-  const clerkId = clerkUser?.id;
-
-  console.log(clerkId, "awe");
-
-  const { user } = useAuth(clerkId ?? "");
-
-  console.log(user, "qw");
+  const { user, isSignedIn } = useUser();
+  console.log(user);
   return (
     <div>
       <header className="flex justify-between items-center mt-8 sm:mx-8 md:mx-16 lg:mx-20">
