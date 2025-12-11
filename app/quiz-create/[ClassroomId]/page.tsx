@@ -6,13 +6,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
 const Page = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [Quiz, setQuiz] = useState([]);
+  const [Quiz, setQuiz] = useState([
+    { id: 1, title: "Quiz Name", description: "Quiz description" },
+  ]);
 
   const handleCreate = async () => {
     try {
@@ -40,6 +43,7 @@ const Page = () => {
 
   return (
     <div className="flex w-full">
+      {/* LEFT CARD LIKE BLOOKET */}
       <div className="border shadow-lg rounded-xl p-5 w-80 bg-white ml-10 mt-10">
         <div className="w-full h-40 bg-blue-500 rounded-xl flex justify-center items-center text-white text-3xl font-bold">
           BRAINKET
@@ -49,10 +53,12 @@ const Page = () => {
         <div className="text-gray-600">description</div>
       </div>
 
-      <div className="flex-1">
-        <div className="w-full flex justify-center gap-4 mt-10">
+      {/* RIGHT SIDE CONTENT */}
+      <div className="flex-1 px-10 mt-10">
+        {/* TOP CONTROLS */}
+        <div className="flex justify-center gap-4">
           <div className="shadow-lg border rounded-xl w-40 h-12 items-center flex justify-center text-xl font-bold">
-            {Quiz?.length ?? 0} Quizs
+            {Quiz?.length ?? 0} Quizzes
           </div>
 
           <Dialog>
@@ -112,6 +118,28 @@ const Page = () => {
               </div>
             </DialogContent>
           </Dialog>
+        </div>
+
+        <div className="mt-12 flex flex-col gap-5 w-[70%] mx-auto">
+          {Quiz.map((q) => (
+            <div
+              key={q.id}
+              className="border shadow-md p-4 rounded-xl flex justify-between items-center"
+            >
+              <div>
+                <strong className="text-xl">{q.title}</strong>
+                <div className="text-gray-600">{q.description}</div>
+              </div>
+
+              <div className="flex gap-4 items-center">
+                <button className="bg-gray-500 text-white rounded-xl px-6 py-2 font-semibold">
+                  Edit
+                </button>
+
+                <Trash2 className="cursor-pointer text-red-500" />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
