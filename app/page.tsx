@@ -3,13 +3,13 @@ import { useRouter } from "next/navigation";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { useEffect } from "react";
 
-const Page = () => {
+export default function Page () {
   const router = useRouter();
   const { isSignedIn } = useUser();
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push("/home-page");
+      router.push("/my-sets");
     }
   }, [isSignedIn]);
 
@@ -56,4 +56,3 @@ const Page = () => {
   );
 };
 
-export default Page;
