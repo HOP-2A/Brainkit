@@ -41,6 +41,9 @@ export const GET = async (
       where: {
         id: classroomId,
       },
+      include: {
+        quizzes: true,
+      },
     });
 
     return NextResponse.json(classroom, { status: 200 });
