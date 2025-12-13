@@ -7,16 +7,22 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageIcon, UploadCloud, Loader2 } from "lucide-react";
-import { SideBar } from "../_components/SideBar";
 
 import { toast } from "sonner";
-import { useAuth } from "../providers/useAuth";
+import { useAuth } from "@/providers/useAuth";
+import { useRouter } from "next/navigation";
+import SideBar from "../_components/SideBar";
+
+type ClassroomType = {
+  id: string;
+};
 const Page = () => {
   const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
   const { user } = useAuth(clerkId ?? "");
+  const [classroom, setClassroom] = useState<ClassroomType | null>(null);
 
-  console.log(user?.id, "qwe");
+  const { push } = useRouter();
   const [inputValues, setInputValues] = useState({
     title: "",
     description: "",
@@ -51,7 +57,7 @@ const Page = () => {
   };
 
   const createClass = async () => {
-    const response = await fetch("/api/classroom-create", {
+    const response = await fetch(`/api/classroom-create/${clerkId}`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({
@@ -66,8 +72,13 @@ const Page = () => {
     console.log(response);
     if (response.ok) {
       toast.success("Classroom successfully created!");
+
+      const data = await response.json();
+
+      setClassroom(data);
+      push(`/quiz-create/${data.message.id}`);
     } else {
-      toast.error("Please use a different class code.");
+      toast.error("Error");
     }
   };
 
