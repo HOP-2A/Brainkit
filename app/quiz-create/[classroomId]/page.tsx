@@ -134,7 +134,7 @@ const Page = () => {
 
           <Dialog>
             <DialogTrigger
-              className="bg-[#4169E1] w-40 text-white rounded-2xl font-semibold 
+              className="bg-[#4169E1] w-40 text-white rounded-2xl font-semibold
                 text-xl h-12 px-6 cursor-pointer
                 shadow-[0_4px_0_#27408B] transition-all
                 hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
@@ -215,7 +215,7 @@ const Page = () => {
 
                 <button
                   onClick={handleCreate}
-                  className="bg-[#4169E1] w-40 mx-auto text-white rounded-2xl font-semibold 
+                  className="bg-[#4169E1] w-40 mx-auto text-white rounded-2xl font-semibold
                   text-xl h-12 px-6 cursor-pointer
                   shadow-[0_4px_0_#27408B] transition-all
                   hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
@@ -320,7 +320,7 @@ const Page = () => {
                         onClick={() =>
                           handleEdit(q.id, q.description, q.title, q.coverImg)
                         }
-                        className="bg-[#4169E1] w-40 mx-auto text-white rounded-2xl font-semibold 
+                        className="bg-[#4169E1] w-40 mx-auto text-white rounded-2xl font-semibold
                   text-xl h-16 px-6 cursor-pointer
                   shadow-[0_4px_0_#27408B] transition-all
                   hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
