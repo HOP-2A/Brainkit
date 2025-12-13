@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, creatorId, classroomId, description } = body;
+    const { title, creatorId, classroomId, description, coverImg } = body;
     if (!title)
       return NextResponse.json({ error: "Title heregtei" }, { status: 401 });
     else {
@@ -13,6 +13,7 @@ export async function POST(req: Request) {
           creatorId,
           classroomId,
           description,
+          coverImg: coverImg ?? "",
         },
       });
 
