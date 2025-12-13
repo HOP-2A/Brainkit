@@ -16,7 +16,15 @@ export const GET = async (
         id: teacherId,
       },
 
-      include: { createdClasses: true },
+      include: {
+        createdClasses: {
+          include: {
+            quizzes: {
+              include: { questions: true },
+            },
+          },
+        },
+      },
     });
 
     return NextResponse.json({ message: teacher }, { status: 200 });

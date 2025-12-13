@@ -10,7 +10,8 @@ import { ImageIcon, UploadCloud, Loader2 } from "lucide-react";
 import { SideBar } from "../_components/SideBar";
 
 import { toast } from "sonner";
-import { useAuth } from "../providers/useAuth";
+import { useAuth } from "@/providers/useAuth";
+
 const Page = () => {
   const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
