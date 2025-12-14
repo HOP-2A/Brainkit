@@ -11,7 +11,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState<string | null>(null);
-
+ const [data, setData] = useState();
   const { user, isSignedIn } = useUser();
   const router = useRouter();
 
@@ -27,6 +27,8 @@ export default function SignUpPage() {
         type: role,
       }),
     });
+
+
 
     const data = await res.json();
 
@@ -44,6 +46,7 @@ export default function SignUpPage() {
       router.push("/");
     }
   }, [isSignedIn]);
+  
 
   return (
     <div className="flex flex-col gap-4 items-center">
