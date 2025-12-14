@@ -5,7 +5,6 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState, ChangeEvent } from "react";
 import { SideBar } from "../_components/SideBar";
 import { ImageIcon, UploadCloud, Loader2 } from "lucide-react";
-
 import {
   Card,
   CardContent,
@@ -29,6 +28,7 @@ import { Play, Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { upload } from "@vercel/blob/client";
+import { useRouter } from "next/navigation";
 
 type ClassroomType = {
   id: string;
@@ -44,6 +44,7 @@ const Page = () => {
   const [classrooms, setClassrooms] = useState<ClassroomType[]>([]);
   const [uploading, setUploading] = useState(false);
 
+  const { push } = useRouter();
   const [inputValues, setInputValues] = useState({
     newTitle: "",
     newDescription: "",
@@ -209,10 +210,6 @@ const Page = () => {
                   {classroom.title || "Untitled"}
                 </h3>
 
-                <p className="text-xs text-muted-foreground">
-                  {classroom.plays || 0} Plays
-                </p>
-
                 <p className="text-[11px] text-muted-foreground">
                   Edited {new Date(classroom.updatedAt).toLocaleString() || 0}
                 </p>
@@ -224,6 +221,7 @@ const Page = () => {
                   variant="outline"
                   size="sm"
                   className="h-8 text-xs cursor-pointer hover:bg-gray-200"
+                  // onClick={push(``)}
                 >
                   QUIZS
                 </Button>
