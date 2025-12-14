@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-
+import { useRouter } from "next/navigation";
+import { SignInButton, useUser } from "@clerk/nextjs";
 const Page = () => {
   const router = useRouter();
   const { isSignedIn } = useUser();
@@ -12,14 +13,6 @@ const Page = () => {
     }
   }, [isSignedIn]);
 
-
-  const clerkId = clerkUser?.id;
-
-  console.log(clerkId, "awe");
-
-  const { user } = useAuth(clerkId ?? "");
-
-  console.log(user, "qw");
   return (
     <div>
       <header className="flex justify-between items-center mt-8 sm:mx-8 md:mx-16 lg:mx-20">
@@ -39,7 +32,7 @@ const Page = () => {
         </div>
 
         <div className="flex gap-4 mt-8">
-          <SignInButton>
+          {/* <SignInButton>
             <button
               className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
                      shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
@@ -47,7 +40,7 @@ const Page = () => {
             >
               Log In
             </button>
-          </SignInButton>
+          </SignInButton> */}
 
           <button
             onClick={() => router.push("/signup")}

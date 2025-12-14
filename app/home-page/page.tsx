@@ -77,7 +77,7 @@ export default function Dashboard() {
                 <div className="text-xs text-gray-500 mt-2">
                   {s.cardsCount} cards
                 </div>
-              </div>
+              </div>  
             ))}
           </div>
         </section>

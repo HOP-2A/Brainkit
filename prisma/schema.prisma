@@ -68,6 +68,7 @@ model QuizQuestion {
   id             String          @id @default(nanoid())
   question       String
   quizId         String
+  timer          Int
   quiz           Quiz?           @relation(fields: [quizId], references: [id])
   options        QuizOption[]
   createdAt      DateTime        @default(now())

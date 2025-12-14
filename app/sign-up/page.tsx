@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -24,6 +25,7 @@ export default function SignUpPage() {
       body: JSON.stringify({
         email,
         name,
+        password,
         type: role,
       }),
     });
@@ -64,6 +66,12 @@ export default function SignUpPage() {
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        className="w-50"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <select
         value={role}
