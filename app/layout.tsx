@@ -7,10 +7,11 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
+  useAuth,
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { useAuth } from "./api/providers/useAuth";
+
 import { Toaster } from "sonner";
 const geistSans = Geist({
   variable: "--font-geist-sans",
