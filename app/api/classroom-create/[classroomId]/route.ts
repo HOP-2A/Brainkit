@@ -26,7 +26,28 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: createdClassroomSet }, { status: 200 });
   } catch (err) {
-    console.log(err);
     return NextResponse.json({ message: err }, { status: 500 });
   }
 }
+
+export const GET = async (
+  req: Request,
+  context: { params: Promise<{ classroomId: string }> }
+) => {
+  const { classroomId } = await context.params;
+
+  try {
+    const classroom = await prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+      include: {
+        quizzes: true,
+      },
+    });
+
+    return NextResponse.json(classroom, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(err, { status: 404 });
+  }
+};
