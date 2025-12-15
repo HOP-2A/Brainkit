@@ -62,7 +62,6 @@ const Page = () => {
   const { user } = useAuth(clerkId ?? "");
   const teacherId = user?.id;
 
-
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -247,7 +246,12 @@ const Page = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 text-xs font-medium hover:bg-gray-200   cursor-pointer"
+                  className="h-8 text-xs  cursor-pointer w-40 bg-[#5B3FFF] text-white
+            rounded-xl 
+            flex items-center justify-center gap-2
+            shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF]
+             hover:-translate-y-1 active:translate-y-1   
+            relative -right-2 transition-all hover:text-white"
                   onClick={() => push(`/classroom/quizzes/${classroom.id}`)}
                 >
                   View Quizzes
