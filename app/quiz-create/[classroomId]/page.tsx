@@ -90,6 +90,7 @@ const Page = () => {
       handleUploadUrl: "/api/upload",
     });
     setEditImageUrl(uploaded.url);
+    
     setUploading(false);
   };
 
@@ -110,18 +111,17 @@ const Page = () => {
       });
 
       if (!res.ok) {
-        console.log("Failed to create quiz");
         return;
       }
 
-      console.log("Quiz created successfully");
+      toast.success("Quiz created successfully");
       GetClass();
       setTitle("");
       setDescription("");
       setImgFile(null);
       setImageUrl("");
     } catch (err) {
-      console.log("Error creating quiz", err);
+      toast.error("Error creating quiz!");
     }
   };
 
@@ -129,7 +129,6 @@ const Page = () => {
     try {
       const res = await fetch(`/api/classroom-create/${classroomId}`);
       if (!res.ok) {
-        console.log("Failed to get classroom");
         return;
       }
       const data: Classroom = await res.json();
@@ -179,15 +178,16 @@ const Page = () => {
       }
 
       console.log("Quiz edited successfully");
-      // reset edit states
       toast.success("Quiz edited successfully");
+
       setNewTitle("");
       setNewDescription("");
       setEditImgFile(null);
       setEditImageUrl("");
       GetClass();
     } catch (err) {
-      console.log("Error editing quiz", err);
+      console.log(err);
+      toast.error("Error editing quiz");
     }
   };
 
@@ -227,7 +227,6 @@ const Page = () => {
                 {quizzes?.length ?? 0} Quizzes
               </div>
 
-              {/* Add Quiz Dialog */}
               <Dialog>
                 <DialogTrigger className="mb-2 w-40 bg-[#5B3FFF] text-white rounded-xl font-bold text-lg py-2 px-2 flex items-center justify-center gap-2 shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF] hover:-translate-y-1 active:translate-y-1 transition-all">
                   <UploadCloud className="w-5 h-5" /> Add Quiz
@@ -241,7 +240,6 @@ const Page = () => {
                   </DialogHeader>
 
                   <div className="flex flex-col gap-4">
-                    {/* Title */}
                     <div className="flex flex-col gap-1">
                       <label className="font-semibold">Title</label>
                       <Input
@@ -251,7 +249,6 @@ const Page = () => {
                       />
                     </div>
 
-                    {/* Description */}
                     <div className="flex flex-col gap-1">
                       <label className="font-semibold">Description</label>
                       <Input
@@ -261,7 +258,6 @@ const Page = () => {
                       />
                     </div>
 
-                    {/* Cover Image */}
                     <div className="border shadow-md p-4 rounded-xl">
                       <label className="font-semibold">Cover Image</label>
                       <CardContent className="flex flex-col gap-4 mt-2">
@@ -316,14 +312,12 @@ const Page = () => {
           </div>
         </div>
 
-        {/* Quizzes List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quizzes.map((q) => (
             <div
               key={q.id}
               className="border shadow-md rounded-xl p-4 hover:shadow-lg transition-all relative bg-white"
             >
-              {/* Cover Image */}
               {q.coverImg ? (
                 <img
                   src={q.coverImg}
@@ -335,7 +329,6 @@ const Page = () => {
                 </div>
               )}
 
-              {/* Title & Description */}
               <h3
                 className="text-lg font-bold mb-1 hover:underline cursor-pointer"
                 onClick={() => router.push(`/quiz/${q.id}`)}
@@ -384,29 +377,27 @@ const Page = () => {
                       <Input
                         type="file"
                         accept="image/*"
-                        onChange={handleFile}
+                        onChange={handleEditFile}
                         className="mt-3 w-[70%] cursor-pointer"
                       />
 
                       <Button
                         onClick={uploadedEditImg}
-                        disabled={!imgFile || uploading}
+                        disabled={!editImgFile || uploading}
                         className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
                      shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
                      transition-all hover:bg-blue-800 hover:text-white"
                       >
                         {uploading ? (
-                          <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Uploading image…
-                          </>
+                          <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
                           <>
-                            <UploadCloud className="w-4 h-4" />
-                            Upload Cover Image
+                            <UploadCloud className="w-4 h-4" /> Upload Cover
+                            Image
                           </>
                         )}
                       </Button>
+
                       <Button
                         onClick={(e) => handleEdit(q)}
                         className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
