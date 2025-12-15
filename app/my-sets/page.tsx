@@ -3,7 +3,6 @@
 import { useAuth } from "@/providers/useAuth";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState, ChangeEvent } from "react";
-import { SideBar } from "../_components/SideBar";
 import { ImageIcon, UploadCloud, Loader2, Search } from "lucide-react";
 import { Eye } from "lucide-react";
 
@@ -31,6 +30,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { upload } from "@vercel/blob/client";
 import { useRouter } from "next/navigation";
+import SideBar from "../_components/SideBar";
 
 type ClassroomType = {
   id: string;
@@ -59,11 +59,9 @@ const Page = () => {
 
   const { user: clerkUser } = useUser();
   const clerkId = clerkUser?.id;
-  console.log(clerkUser);
   const { user } = useAuth(clerkId ?? "");
   const teacherId = user?.id;
 
-  console.log(teacherId, "qwe");
 
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -116,7 +114,6 @@ const Page = () => {
     }
   };
 
-  console.log(className);
   const editClassroom = async (id: string) => {
     const response = await fetch("/api/classroom-edit", {
       method: "POST",
@@ -151,7 +148,6 @@ const Page = () => {
   const searchClassName = async () => {
     const res = await fetch(`/api/classroom-search/${className}`);
     if (res.ok) {
-      console.log("jiayou");
       const data = await res.json();
       setClassrooms(data);
     }
@@ -348,7 +344,6 @@ const Page = () => {
           </p>
         )}
       </div>
-      
     </div>
   );
 };
