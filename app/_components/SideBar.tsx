@@ -18,7 +18,7 @@ export default function SideBar() {
           <h2 className="text-4xl font-bold mb-6">BRAINKET</h2>
 
           <button
-            onClick={() => router.push("/create-class")}
+            onClick={() => router.push("/classroom-create")}
             className="mb-6 w-40 bg-[#5B3FFF] text-white
             rounded-xl font-bold text-lg py-3 px-4
             flex items-center justify-center gap-2
@@ -41,7 +41,7 @@ export default function SideBar() {
                 <span>My sets</span>
               </li>
               <li
-                onClick={() => router.push("/create-quiz")}
+                onClick={() => router.push("/quiz-create")}
                 className="flex items-center gap-3 p-3 rounded-lg cursor-pointer
                text-gray-950 font-semibold text-xl hover:bg-white transition-all"
               >

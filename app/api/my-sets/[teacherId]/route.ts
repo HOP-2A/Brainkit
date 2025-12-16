@@ -5,27 +5,30 @@ export const GET = async (
   req: Request,
   context: { params: { teacherId: string } }
 ) => {
-  const { teacherId } = context.params;
+  const { teacherId } = await context.params;
+
+  if (!teacherId) {
+    return;
+  }
   try {
-    const teacher = await prisma.teacher.findFirst({
+    const teacher = await prisma.teacher.findUnique({
       where: {
         id: teacherId,
       },
+
+      include: {
+        createdClasses: {
+          include: {
+            quizzes: {
+              include: { questions: true },
+            },
+          },
+        },
+      },
     });
 
-    if (!teacher) {
-      return NextResponse.json(
-        { message: "teacher id baihgui baina" },
-        { status: 404 }
-      );
-    }
-
-    const classrooms = await prisma.classroom.findMany({
-      where: { teacherId },
-    });
-
-    return NextResponse.json(classrooms, { status: 200 });
+    return NextResponse.json({ message: teacher }, { status: 200 });
   } catch (err) {
-    return NextResponse.json(err, { status: 404 });
+    return NextResponse.json({ message: err }, { status: 404 });
   }
 };
