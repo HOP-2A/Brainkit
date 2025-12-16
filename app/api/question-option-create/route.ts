@@ -3,15 +3,15 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { question, quizId } = body;
-    if (!question)
+    const { question, quizId, text, isCorrect, questionId, timer } = body;
+    if (!question || !text)
       return NextResponse.json(
-        { error: "question cannot be empty" },
+        { error: "question cannot be empty and answers cannot be empty" },
         { status: 401 }
       );
-    if (!quizId)
+    if (!quizId || !questionId)
       return NextResponse.json(
-        { error: "Ymar quiztei holbootoigoo tavij ugnu uu" },
+        { error: "Ymar quiztei , question holbootoigoo tavij ugnu uu" },
         { status: 401 }
       );
     else {
@@ -19,10 +19,19 @@ export async function POST(req: Request) {
         data: {
           question,
           quizId,
+          timer,
+        },
+      });
+
+      await prisma.quizOption.create({
+        data: {
+          text,
+          questionId,
+          isCorrect,
         },
       });
       return NextResponse.json(
-        { message: "successfully created question" },
+        { message: "successfully created question and options" },
         { status: 200 }
       );
     }
