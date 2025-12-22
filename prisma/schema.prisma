@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Teacher {
-  id String @id @default(nanoid())
+  id             String      @id @default(nanoid())
   email          String      @unique
   name           String
   clerkId        String      @unique
@@ -47,7 +47,7 @@ model Classroom {
   students    Student[]
   quizzes     Quiz[]
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime  @updatedAt
 }
 
 model Quiz {
@@ -56,13 +56,14 @@ model Quiz {
   description String?
   coverImg    String?
   classroomId String
+  code        String               @unique
   classroom   Classroom            @relation(fields: [classroomId], references: [id])
   creatorId   String
   creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
   questions   QuizQuestion[]
   attempts    StudentQuizAttempt[]
   createdAt   DateTime             @default(now())
-    updatedAt   DateTime @updatedAt
+  updatedAt   DateTime             @updatedAt
 }
 
 model QuizQuestion {

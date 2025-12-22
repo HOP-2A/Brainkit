@@ -67,4 +67,3 @@ export default function RootLayout({
     </ClerkProvider>
   );
 }
-//how to make if url "sign-up dont show the buttons"
