@@ -61,6 +61,7 @@ const Page = () => {
   const [editImgFile, setEditImgFile] = useState<File | null>(null);
   const [editImageUrl, setEditImageUrl] = useState("");
 
+  const { push } = useRouter();
   const params = useParams();
   const router = useRouter();
   const classroomId = params.classroomId as string;
@@ -104,7 +105,7 @@ const Page = () => {
     if (!classroom?.teacherId) return console.log("Teacher ID not found");
 
     try {
-      const res = await fetch(`/api/quizCreate${clerkId}`, {
+      const res = await fetch(`/api/quizCreate/${clerkId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -344,12 +345,11 @@ const Page = () => {
 
               <h3
                 className="text-lg font-bold mb-1 hover:underline cursor-pointer"
-                onClick={() => router.push(`/quiz/${q.id}`)}
+                onClick={() => push(`/question-create/${q.id}`)}
               >
                 {q.title}
               </h3>
               <p className="text-gray-600 text-sm">{q.description}</p>
-
               <div className="absolute bottom-3 right-3 flex gap-2">
                 <Button
                   size="sm"
