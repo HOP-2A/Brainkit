@@ -41,6 +41,26 @@ export async function POST(req: Request) {
 
       return NextResponse.json(createdQuestion, { status: 201 });
     }
+
+    const createdQuestion = await prisma.quizQuestion.create({
+      data: {
+        question,
+        timer,
+        quiz: {
+          connect: {
+            id: quizId,
+          },
+        },
+        options: {
+          create: options.map((opt: any) => ({
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+          })),
+        },
+      },
+    });
+
+    return NextResponse.json(createdQuestion, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Server error", details: error },
