@@ -68,7 +68,7 @@ const Page = () => {
         name: inputValues.className,
         code: inputValues.classCode,
       }),
-    });
+    }); 
     console.log(response);
     if (response.ok) {
       toast.success("Classroom successfully created!");
