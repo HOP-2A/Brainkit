@@ -113,7 +113,6 @@ const Page = () => {
       setQuestion("");
       getQuiz();
       setTimer(20);
-
       setOptions(options.map(() => ({ text: "", isCorrect: false })));
       getQuiz();
     } else {
