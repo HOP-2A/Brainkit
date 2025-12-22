@@ -1,4 +1,27 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Save, X } from "lucide-react";
+import SideBar from "@/app/_components/SideBar";
+import { toast } from "sonner";
+
+type Questions = {
+  id: string;
+  title: string;
+  description: string;
+  creatorId: string;
+};
+
 type Quiz = {
   id: string;
   title: string;
@@ -8,103 +31,179 @@ type Quiz = {
   creatorId: string;
 };
 
-type Questions = {
-  id: string;
-  title: string;
-  description: string;
-  creatorId: string;
+type Option = {
+  text: string;
+  isCorrect: boolean;
 };
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import SideBar from "@/app/_components/SideBar";
+
 const Page = () => {
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
-  const [questions, setQuestions] = useState<Questions[]>([]);
   const params = useParams();
   const quizId = params.quizId as string;
+
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const [questions, setQuestions] = useState<Questions[]>([]);
+
+  const [question, setQuestion] = useState("");
+  const [timer, setTimer] = useState<number>(20);
+
+  const [options, setOptions] = useState<Option[]>([
+    { text: "", isCorrect: false },
+    { text: "", isCorrect: false },
+    { text: "", isCorrect: false },
+    { text: "", isCorrect: false },
+  ]);
+
+  const updateOptionText = (index: number, value: string) => {
+    const copy = [...options];
+    copy[index].text = value;
+    setOptions(copy);
+  };
+
+  const setCorrectOption = (index: number) => {
+    setOptions(
+      options.map((opt, i) => ({
+        ...opt,
+        isCorrect: i === index,
+      }))
+    );
+  };
+
   const getQuiz = async () => {
-    try {
-      const res = await fetch(`/api/quizCreate/${quizId}`);
-      if (!res.ok) {
-        console.log("Failed to get quiz");
-        return;
-      }
-      const data: Quiz = await res.json();
-      setQuiz(data);
-      setQuestions(data.questions);
-    } catch (err) {
-      console.log("Error fetching quiz", err);
+    const res = await fetch(`/api/quizCreate/${quizId}`);
+    if (!res.ok) return;
+    const data: Quiz = await res.json();
+    setQuiz(data);
+    setQuestions(data.questions);
+  };
+
+  const createQuestion = async () => {
+    if (!question.trim()) return toast.error("Question hooson");
+    if (!options.some((o) => o.isCorrect))
+      return toast.error("Zuv hariult songo");
+
+    const res = await fetch("/api/question-option-create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        question,
+        quizId,
+        timer,
+        options,
+      }),
+    });
+
+    if (res.ok) {
+      toast.success("Question added 🎉");
+      setQuestion("");
+      setOptions(options.map(() => ({ text: "", isCorrect: false })));
+      getQuiz();
+    } else {
+      toast.error("Failed to create question");
     }
   };
+
   useEffect(() => {
     if (quizId) getQuiz();
   }, [quizId]);
 
-  console.log(quiz);
   return (
-    <div className="px-10 mt-10">
-      <div className="flex items-start gap-20">
-        <div className="border shadow-lg rounded-xl p-5 w-80 bg-white">
-          <div>
-            {quiz?.coverImg ? (
-              <img
-                src={quiz.coverImg}
-                alt="Classroom Cover"
-                className="w-full h-40 object-cover rounded-xl"
-              />
-            ) : (
-              <div className="w-full h-40 bg-blue-500 rounded-xl flex justify-center items-center text-white text-3xl font-bold">
-                BRAINKET
-              </div>
-            )}
+    <div className="flex gap-20">
+      <SideBar />
+
+      <div className="border shadow-lg rounded-xl p-5 w-80 bg-white">
+        {quiz?.coverImg ? (
+          <img
+            src={quiz.coverImg}
+            className="w-full h-40 object-cover rounded-xl"
+          />
+        ) : (
+          <div className="w-full h-40 bg-blue-500 rounded-xl flex items-center justify-center text-white text-3xl font-bold">
+            BRAINKET
           </div>
-          <div className="mt-4 text-xl font-semibold">{quiz?.title}</div>
-          <div className="text-gray-600">{quiz?.description}</div>
+        )}
+        <div className="mt-4 text-xl font-semibold">{quiz?.title}</div>
+        <div className="text-gray-600">{quiz?.description}</div>
+      </div>
+
+      <div className="mt-6 space-y-4">
+        <div className="shadow border rounded-xl w-52 h-12 flex items-center justify-center text-xl font-bold">
+          {questions.length} Questions
         </div>
 
-        <div className="flex items-center gap-4 mt-6">
-          <div className="shadow-lg border rounded-xl w-50 h-12 flex items-center justify-center text-xl font-bold">
-            {questions?.length ?? 0} Questions
-          </div>
+        <Dialog>
+          <DialogTrigger className="bg-[#4169E1] text-white rounded-2xl font-semibold text-xl h-12 px-6 shadow-[0_4px_0_#27408B] hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]">
+            Add Question
+          </DialogTrigger>
 
-          <Dialog>
-            <DialogTrigger
-              className="bg-[#4169E1] w-50 text-white rounded-2xl font-semibold
-            text-xl h-12 px-6 cursor-pointer
-            shadow-[0_4px_0_#27408B] transition-all
-            hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
-            active:translate-y-1 active:shadow-[0_1px_0_#27408B]"
-            >
-              Add Question
-            </DialogTrigger>
+          <DialogContent className="max-w-5xl p-8">
+            <DialogHeader>
+              <DialogTitle>Add Question</DialogTitle>
+            </DialogHeader>
 
-            <DialogContent className="w-250">
-              <Input placeholder="Question Text" className="w-110 h-40" />
+            <Input
+              placeholder="Type your question here..."
+              className="h-20 text-lg font-semibold"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+            />
 
-              <Input
-                placeholder="Option 1"
-                className="bg-yellow-300 h-20 w-50 absolute left-70 top-50"
-              />
+            <Input
+              type="number"
+              placeholder="Timer (seconds)"
+              value={timer}
+              onChange={(e) => setTimer(Number(e.target.value))}
+            />
 
-              <Input placeholder="Option 2" className="bg-blue-500 h-20 w-50" />
-              <Input placeholder="Option 3" className="bg-red-500 h-20 w-50" />
-              <Input
-                placeholder="Option 4"
-                className="bg-green-500 h-20 w-50 absolute left-70 top-74"
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              {options.map((opt, index) => {
+                const colors = [
+                  "bg-red-500",
+                  "bg-blue-500",
+                  "bg-yellow-400",
+                  "bg-green-500",
+                ];
+
+                return (
+                  <div
+                    key={index}
+                    className={`${colors[index]}
+                    h-50
+                    px-2
+                    py-2
+                    rounded-2xl
+                    flex items-center gap-4
+                    shadow-md
+                    hover:scale-[1.02]
+                    transition`}
+                  >
+                    <Checkbox
+                      checked={opt.isCorrect}
+                      onCheckedChange={() => setCorrectOption(index)}
+                    />
+                    <Input
+                      className="bg-white text-black h-20 w-50 text-lg font-medium"
+                      placeholder={`Option ${index + 1}`}
+                      value={opt.text}
+                      onChange={(e) => updateOptionText(index, e.target.value)}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-end gap-4 mt-6">
+              <button className="flex items-center gap-2 text-gray-500">
+                <X /> Cancel
+              </button>
+              <button
+                onClick={createQuestion}
+                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl"
+              >
+                <Save /> Save
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
