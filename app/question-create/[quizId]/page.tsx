@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -14,6 +15,7 @@ import {
 import { Save, X } from "lucide-react";
 import SideBar from "@/app/_components/SideBar";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 type Questions = {
   id: string;
@@ -67,7 +69,6 @@ const Page = () => {
       }))
     );
   };
-
   const getQuiz = async () => {
     const res = await fetch(`/api/quizCreate/${quizId}`);
     if (!res.ok) return;
@@ -95,6 +96,9 @@ const Page = () => {
     if (res.ok) {
       toast.success("Question added 🎉");
       setQuestion("");
+      getQuiz();
+      setTimer(0);
+
       setOptions(options.map(() => ({ text: "", isCorrect: false })));
       getQuiz();
     } else {
@@ -103,14 +107,15 @@ const Page = () => {
   };
 
   useEffect(() => {
-    if (quizId) getQuiz();
+    const fetchData = async () => await getQuiz();
+    fetchData();
   }, [quizId]);
 
   return (
     <div className="flex gap-20">
       <SideBar />
 
-      <div className="border shadow-lg rounded-xl p-5 w-80 bg-white">
+      <div className="border shadow-lg rounded-xl p-5 w-80 bg-white h-80">
         {quiz?.coverImg ? (
           <img
             src={quiz.coverImg}
@@ -126,7 +131,7 @@ const Page = () => {
       </div>
 
       <div className="mt-6 space-y-4">
-        <div className="shadow border rounded-xl w-52 h-12 flex items-center justify-center text-xl font-bold">
+        <div className="shadow border rounded-xl w-53 h-12 flex items-center justify-center text-xl font-bold">
           {questions.length} Questions
         </div>
 
@@ -135,7 +140,7 @@ const Page = () => {
             Add Question
           </DialogTrigger>
 
-          <DialogContent className="max-w-5xl p-8">
+          <DialogContent className="p-8 w-900">
             <DialogHeader>
               <DialogTitle>Add Question</DialogTitle>
             </DialogHeader>
@@ -146,6 +151,7 @@ const Page = () => {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
             />
+            <div className="text-gray-800 font-bold">Time Limit</div>
 
             <Input
               type="number"
@@ -181,7 +187,7 @@ const Page = () => {
                       onCheckedChange={() => setCorrectOption(index)}
                     />
                     <Input
-                      className="bg-white text-black h-20 w-50 text-lg font-medium"
+                      className="bg-white text-black h-35 w-70 text-lg font-medium"
                       placeholder={`Option ${index + 1}`}
                       value={opt.text}
                       onChange={(e) => updateOptionText(index, e.target.value)}
@@ -192,9 +198,16 @@ const Page = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-6">
-              <button className="flex items-center gap-2 text-gray-500">
-                <X /> Cancel
-              </button>
+              <DialogClose asChild>
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2 text-gray-500"
+                >
+                  {" "}
+                  <X /> Cancel
+                </Button>
+              </DialogClose>
+
               <button
                 onClick={createQuestion}
                 className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl"
