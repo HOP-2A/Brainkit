@@ -16,10 +16,12 @@ import {
   Trash,
 } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { CardContent } from "@/components/ui/card";
 import { upload } from "@vercel/blob/client";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, ChangeEvent } from "react";
+import { useAuth } from "@/providers/useAuth";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -43,7 +45,11 @@ type Quiz = {
 };
 
 const Page = () => {
+  const { user: clerkUser } = useUser();
+  const clerkId = clerkUser?.id;
+  const { user } = useAuth(clerkId ?? "");
   const [title, setTitle] = useState("");
+  const [code, setCode] = useState("");
   const [description, setDescription] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -90,7 +96,7 @@ const Page = () => {
       handleUploadUrl: "/api/upload",
     });
     setEditImageUrl(uploaded.url);
-    
+
     setUploading(false);
   };
 
@@ -98,10 +104,11 @@ const Page = () => {
     if (!classroom?.teacherId) return console.log("Teacher ID not found");
 
     try {
-      const res = await fetch("/api/quizCreate", {
+      const res = await fetch(`/api/quizCreate${clerkId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          code,
           title,
           description,
           coverImg: imageUrl,
@@ -200,7 +207,6 @@ const Page = () => {
       <SideBar />
 
       <main className="flex-1 p-10 space-y-10">
-        {/* Classroom Card + Stats */}
         <div className="flex flex-col md:flex-row gap-8 items-start">
           <div className="w-full md:w-80 border shadow-lg rounded-xl bg-white overflow-hidden">
             {classroom?.coverImg ? (
@@ -257,7 +263,14 @@ const Page = () => {
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
-
+                    <div>
+                      <label>Code</label>
+                      <Input
+                        placeholder="Create your code..."
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                      />
+                    </div>
                     <div className="border shadow-md p-4 rounded-xl">
                       <label className="font-semibold">Cover Image</label>
                       <CardContent className="flex flex-col gap-4 mt-2">
@@ -417,5 +430,4 @@ const Page = () => {
     </div>
   );
 };
-//if i click quiz name it pushes me to localhost/quiz/quiz.id
 export default Page;

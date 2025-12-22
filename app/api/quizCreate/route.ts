@@ -29,3 +29,24 @@ export async function POST(req: Request) {
     );
   }
 }
+export const GET = async (
+  req: Request,
+  context: { params: Promise<{ quizId: string }> }
+) => {
+  const { quizId } = await context.params;
+
+  try {
+    const Quiz = await prisma.quiz.findUnique({
+      where: {
+        id: quizId,
+      },
+      include: {
+        questions: true,
+      },
+    });
+
+    return NextResponse.json(Quiz, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(err, { status: 404 });
+  }
+};

@@ -21,7 +21,7 @@ const Page = () => {
   const clerkId = clerkUser?.id;
   const { user } = useAuth(clerkId ?? "");
   const [classroom, setClassroom] = useState<ClassroomType | null>(null);
-
+  console.log(clerkId);
   const { push } = useRouter();
   const [inputValues, setInputValues] = useState({
     title: "",
