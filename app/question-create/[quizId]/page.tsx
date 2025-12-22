@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { PenLine } from "lucide-react";
+import { Trash } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -19,9 +21,9 @@ import { Button } from "@/components/ui/button";
 
 type Questions = {
   id: string;
-  title: string;
-  description: string;
-  creatorId: string;
+  quizId: string;
+  question: string;
+  timer: string;
 };
 
 type Quiz = {
@@ -74,9 +76,10 @@ const Page = () => {
     if (!res.ok) return;
     const data: Quiz = await res.json();
     setQuiz(data);
-    setQuestions(data.questions);
+    setQuestions(data.questions || null);
   };
 
+  console.log(questions);
   const createQuestion = async () => {
     if (!question.trim()) return toast.error("Question hooson");
     if (!options.some((o) => o.isCorrect))
@@ -106,11 +109,47 @@ const Page = () => {
     }
   };
 
+  const deleteAll = async () => {
+    const response = await fetch("/api/delete-question", {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        quizId,
+      }),
+    });
+    if (response.ok) {
+      toast.success("All questions deleted successfully.");
+    } else {
+      toast.error("Error");
+    }
+  };
+
+  const deleteQuestion = async (questionId: string) => {
+    const response = await fetch("/api/delete-question", {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        questionId,
+      }),
+    });
+    if (response.ok) {
+      toast.success("Question deleted successfully");
+      getQuiz();
+    } else if (response.ok) {
+      toast.error("Error");
+    }
+  };
+
+  // const editQuestion = () => {};
   useEffect(() => {
     const fetchData = async () => await getQuiz();
     fetchData();
   }, [quizId]);
-
+  console.log(questions);
   return (
     <div className="flex gap-20">
       <SideBar />
@@ -131,8 +170,21 @@ const Page = () => {
       </div>
 
       <div className="mt-6 space-y-4">
-        <div className="shadow border rounded-xl w-53 h-12 flex items-center justify-center text-xl font-bold">
-          {questions.length} Questions
+        <div className="flex gap-2">
+          <div className="shadow border rounded-xl w-53 h-12 flex items-center justify-center text-xl font-bold">
+            {questions.length} Questions
+          </div>
+          <Button
+            onClick={deleteAll}
+            className="w-53 h-12 bg-[#ec2c55] text-white
+            rounded-xl font-bold text-lg
+            flex items-center justify-center gap-2
+            shadow-[0_5px_0_#3B1FCC] hover:bg-[#ff5252]
+             hover:-translate-y-1 active:translate-y-1   
+            relative -right-2 transition-all"
+          >
+            <Trash /> Delete All Questions
+          </Button>
         </div>
 
         <Dialog>
@@ -217,6 +269,51 @@ const Page = () => {
             </div>
           </DialogContent>
         </Dialog>
+      </div>
+      <div>
+        {questions.map((question, index) => {
+          return (
+            <div
+              key={index}
+              className="border-2 border-gray-400 w-full rounded-lg p-5 mt-2 shadow-xl flex"
+            >
+              <div>
+                <div className="-mt-2">
+                  <Button
+                    className=" w-18 bg-[#492cec] text-white -ml-4
+            rounded-xl font-bold text-lg py-3 px-4
+            flex items-center justify-center gap-2
+            shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF]
+             hover:-translate-y-1 active:translate-y-1   
+            relative -right-2 transition-all"
+                  >
+                    <span>
+                      {" "}
+                      <PenLine />
+                    </span>
+                    Edit{" "}
+                  </Button>
+                  <Button
+                    onClick={() => deleteQuestion(question.id)}
+                    className="mt-3 w-18 bg-[#ec2c55] text-white -ml-4
+            rounded-xl font-bold text-lg py-3 px-4
+            flex items-center justify-center gap-2
+            shadow-[0_5px_0_#3B1FCC] hover:bg-[#ff5252]
+             hover:-translate-y-1 active:translate-y-1   
+            relative -right-2 transition-all"
+                  >
+                    <Trash />
+                  </Button>
+                </div>
+              </div>
+              <div className="pl-6">
+                <div>Question {index + 1}</div>
+                <div>{question.question}</div>
+                <div>{question.id}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
