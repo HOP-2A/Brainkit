@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -12,7 +12,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [error, setError] = useState<string | null>(null);
- const [data, setData] = useState();
+  const [data, setData] = useState();
   const { user, isSignedIn } = useUser();
   const router = useRouter();
 
@@ -30,15 +30,11 @@ export default function SignUpPage() {
       }),
     });
 
-
-
     const data = await res.json();
 
     if (!res.ok) {
-      // if the response is an error, show it
       setError(data.error || "Something went wrong");
     } else {
-      // successful sign up, you can redirect or show success
       router.push("/");
     }
   };
@@ -48,44 +44,30 @@ export default function SignUpPage() {
       router.push("/");
     }
   }, [isSignedIn]);
-  
 
   return (
-    <div className="flex flex-col gap-4 items-center">
-      <div className="border bg-blue-500 w-50 text-white shadow-black rounded-lg items-center p-4">
-        <strong className="text-4xl">Brainkit</strong>
-      </div>
-      <Input
-        className="w-50"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        className="w-50"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Input
-        className="w-50"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-        className="border bg-blue-500 text-white rounded-lg p-2"
-      >
-        <option value="">Select Role</option>
-        <option value="TEACHER">Teacher</option>
-        <option value="STUDENT">Student</option>
-      </select>
-      {error && <p className="text-red-500">{error}</p>} {/* <-- show error */}
-      <Button onClick={handleSubmit} className="bg-blue-500 flex">
-        Sign Up
-      </Button>
+    <div>
+      <header className="flex justify-between items-center mt-5 sm:mx-8">
+        <div
+          className="bg-[#8598FF] text-white sm:px-6 md:px-8 sm:py-3.5 rounded-xl text-2xl sm:text-3xl 
+          md:text-4xl font-extrabold tracking-wider
+          shadow-[0_6px_0_#27408B] text-center drop-shadow-lg"
+        >
+          BRAINKET
+        </div>
+        <div className="ml-auto pr-160">
+          <SignInButton>
+            <button
+              className=" bg-gray-400 text-white rounded-xl font-bold text-base 
+              px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 shadow-[0_4px_0_#999999]
+              hover:bg-gray-500 hover:scale-105 hover:shadow-[0_6px_0_#777777]
+              active:translate-y-1 active:shadow-[0_2px_0_#555555] transition-all"
+            >
+              Log In
+            </button>
+          </SignInButton>
+        </div>
+      </header>
     </div>
   );
 }
