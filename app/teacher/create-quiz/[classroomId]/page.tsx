@@ -204,7 +204,7 @@ const Page = () => {
   useEffect(() => {
     if (classroomId) GetClass();
   }, [classroomId]);
-
+  console.log(classroom);
   return (
     <div className="min-h-screen flex bg-gray-100">
       <SideBar />

@@ -9,6 +9,7 @@ export async function POST(req: Request) {
     else {
       await prisma.quiz.create({
         data: {
+          code,
           title,
           creatorId,
           classroomId,
