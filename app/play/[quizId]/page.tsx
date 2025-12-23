@@ -19,7 +19,7 @@ type Quiz = {
   questions: Question[];
 };
 
-const colors = ["bg-orange-400", "bg-blue-500", "bg-green-500", "bg-red-600"];
+const colors = ["bg-orange-400", "bg-blue-500", "bg-green-500", "bg-red-500"];
 
 export default function Page() {
   const params = useParams();
@@ -38,7 +38,6 @@ export default function Page() {
 
   if (!quiz) return null;
 
-  console.log(quiz);
   const question = quiz.questions[0];
   return (
     <div className="h-screen flex flex-col bg-white">
