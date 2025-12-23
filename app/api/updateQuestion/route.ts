@@ -1,6 +1,12 @@
 import { prisma } from "@/lib/db";
 import { NextResponse } from "next/server";
 
+type Option = {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+};
+
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
@@ -22,7 +28,7 @@ export async function PUT(req: Request) {
           timer: newTimer,
           options: {
             deleteMany: {},
-            create: newOptions.map((opt: any) => ({
+            create: newOptions.map((opt: Option) => ({
               text: opt.text,
               isCorrect: opt.isCorrect,
             })),

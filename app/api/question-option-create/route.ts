@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 
+type Option = {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+};
 export async function POST(req: Request) {
   try {
     const { question, quizId, timer, options } = await req.json();
@@ -9,7 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid input" }, { status: 400 });
     }
 
-    const normalizedTexts = options.map((opt: any) =>
+    const normalizedTexts = options.map((opt: Option) =>
       opt.text.trim().toLowerCase()
     );
 
@@ -31,7 +36,7 @@ export async function POST(req: Request) {
             },
           },
           options: {
-            create: options.map((opt: any) => ({
+            create: options.map((opt: Option) => ({
               text: opt.text,
               isCorrect: opt.isCorrect,
             })),
@@ -41,26 +46,6 @@ export async function POST(req: Request) {
 
       return NextResponse.json(createdQuestion, { status: 201 });
     }
-
-    const createdQuestion = await prisma.quizQuestion.create({
-      data: {
-        question,
-        timer,
-        quiz: {
-          connect: {
-            id: quizId,
-          },
-        },
-        options: {
-          create: options.map((opt: any) => ({
-            text: opt.text,
-            isCorrect: opt.isCorrect,
-          })),
-        },
-      },
-    });
-
-    return NextResponse.json(createdQuestion, { status: 201 });
   } catch (error) {
     return NextResponse.json(
       { error: "Server error", details: error },
