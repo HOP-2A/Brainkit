@@ -23,7 +23,7 @@ export default function StudentSideBar() {
       name: "Play",
       icon: <Play className="w-5 h-5" />,
       path: "../students/play",
-    }
+    },
   ];
 
   return (
@@ -42,12 +42,16 @@ export default function StudentSideBar() {
                 text-white font-semibold text-xl transition-colors relative
                 hover:bg-white hover:text-black`}
               >
-                {isActive && (
-                  <span className="absolute left-0 top-0 h-full w-1 bg-white rounded-r-md"></span>
-                )}
-
+                <span
+                  className={`absolute left-0 top-0 h-full w-1 rounded-r-md transition-all
+                ${
+                  isActive
+                    ? "bg-white"
+                    : "bg-transparent group-hover:bg-white rounded-2xl"
+                }`}
+                ></span>
                 {item.icon}
-                <span className="ml-1">{item.name}</span>
+                <span className="ml-2">{item.name}</span>
               </li>
             );
           })}

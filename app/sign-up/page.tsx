@@ -46,28 +46,89 @@ export default function SignUpPage() {
   }, [isSignedIn]);
 
   return (
-    <div>
-      <header className="flex justify-between items-center mt-5 sm:mx-8">
-        <div
-          className="bg-[#8598FF] text-white sm:px-6 md:px-8 sm:py-3.5 rounded-xl text-2xl sm:text-3xl 
-          md:text-4xl font-extrabold tracking-wider
-          shadow-[0_6px_0_#27408B] text-center drop-shadow-lg"
-        >
-          BRAINKET
-        </div>
-        <div className="ml-auto pr-160">
+    <div className="min-h-screen flex">
+      <div className="w-1/2 bg-white flex flex-col">
+        <header className="flex justify-between items-center px-8 py-6">
+          <div className="bg-[#3a25d9] text-white px-6 py-3 rounded-xl text-3xl font-extrabold shadow-[0_8px_0_#1f1a99]">
+            BRAINKET
+          </div>
+
           <SignInButton>
             <button
-              className=" bg-gray-400 text-white rounded-xl font-bold text-base 
-              px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 shadow-[0_4px_0_#999999]
-              hover:bg-gray-500 hover:scale-105 hover:shadow-[0_6px_0_#777777]
-              active:translate-y-1 active:shadow-[0_2px_0_#555555] transition-all"
+              className="border-2 border-gray-300 rounded-lg px-5 py-2 font-semibold text-gray-600 
+              hover:bg-gray-100 shadow-[0_4px_0_rgba(156,163,175,1)] transition-all duration-200 ease-out
+              hover:brightness-110 hover:-translate-y-1"
             >
               Log In
             </button>
           </SignInButton>
+        </header>
+
+        <div className="flex-1 flex items-center justify-center">
+          <div className="w-full max-w-sm space-y-4 mb-28">
+            <h1 className="text-2xl font-bold text-center mb-4  ">
+              Create an account
+            </h1>
+
+            <Input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Input
+              placeholder="Username"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+            >
+              <option value="">Who are you ?</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+            </select>
+
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
+
+            <div className="active:translate-y-[4px] transition-all">
+              <Button
+                onClick={handleSubmit}
+                className="w-full bg-[#3a25d9] text-white font-bold py-4
+                shadow-[0_8px_0_#1f1a99] transition-all duration-200 ease-out
+                hover:bg-[#2c1fbf] hover:brightness-110 hover:-translate-y-1
+                hover:shadow-[0_12px_0_#1f1a99]"
+              >
+                Sign Up
+              </Button>
+            </div>
+          </div>
         </div>
-      </header>
+      </div>
+
+      <div className="w-1/2 bg-[#1f1a99] relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle,_white_1px,_transparent_1px)] bg-[length:40px_40px]" />
+
+        <div className="relative text-white text-center">
+          <div className="text-6xl mb-4">PENGUIN</div>
+          <p className="text-lg font-semibold">
+            Leveling up engagement,
+            <br /> one question at a time.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

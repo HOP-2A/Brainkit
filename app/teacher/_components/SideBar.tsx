@@ -2,7 +2,14 @@
 
 import { UserButton } from "@clerk/nextjs";
 import { useRouter, usePathname } from "next/navigation";
-import { List, PenLine, History, SquarePlus, Settings, UserRound } from "lucide-react";
+import {
+  List,
+  PenLine,
+  History,
+  SquarePlus,
+  Settings,
+  UserRound,
+} from "lucide-react";
 
 export default function SideBar() {
   const router = useRouter();
@@ -12,22 +19,17 @@ export default function SideBar() {
     {
       name: "My classes",
       icon: <List className="w-5 h-5" />,
-      path: "../teacher/my-sets",
-    },
-    {
-      name: "Create Quiz",
-      icon: <SquarePlus className="w-5 h-5" />,
-      path: "../teacher/create-quiz",
+      path: "/teacher/my-sets",
     },
     {
       name: "History",
       icon: <History className="w-5 h-5" />,
-      path: "../teacher/history",
+      path: "/teacher/history",
     },
     {
       name: "Settings",
       icon: <Settings className="w-5 h-5" />,
-      path: "../teacher/settings-page",
+      path: "/teacher/settings-page",
     },
   ];
 
@@ -60,9 +62,14 @@ export default function SideBar() {
                 text-white font-semibold text-xl transition-colors relative
                 hover:bg-white hover:text-black`}
               >
-                {isActive && (
-                  <span className="absolute left-0 top-0 h-full w-1 bg-white rounded-r-md"></span>
-                )}
+                <span
+                  className={`absolute left-0 top-0 h-full w-1 rounded-r-md transition-all
+                ${
+                  isActive
+                    ? "bg-white"
+                    : "bg-transparent group-hover:bg-white rounded-2xl"
+                }`}
+                ></span>
 
                 {item.icon}
                 <span className="ml-2">{item.name}</span>
@@ -70,6 +77,7 @@ export default function SideBar() {
             );
           })}
         </ul>
+
         <div
           onClick={() => router.push("../teacher/classroom-create")}
           className="mt-auto w-40 bg-[#0BC2CF] text-white 
