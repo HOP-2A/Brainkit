@@ -1,58 +1,65 @@
 "use client";
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const Page = () => {
-  const [quiz, setQuiz] = useState<Quiz | null>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
+type Option = {
+  id: string;
+  text: string;
+};
+
+type Question = {
+  id: string;
+  question: string;
+  options: Option[];
+};
+
+type Quiz = {
+  id: string;
+  title: string;
+  questions: Question[];
+};
+
+const colors = ["bg-orange-400", "bg-blue-500", "bg-green-500", "bg-red-500"];
+
+export default function Page() {
   const params = useParams();
   const quizId = params.quizId as string;
 
-  const GetQuiz = async () => {
-    try {
-      const res = await fetch(`/api/quizCreate/${quizId}`);
-      if (!res.ok) return;
-
-      const data: Quiz = await res.json();
-      setQuiz(data);
-      setQuestions(data.questions);
-    } catch (err) {
-      console.log("Error fetching quiz", err);
-    }
-  };
+  const [quiz, setQuiz] = useState<Quiz | null>(null);
 
   useEffect(() => {
-    if (quizId) GetQuiz();
+    const fetchQuiz = async () => {
+      const res = await fetch(`/api/quizCreate/${quizId}`);
+      const data = await res.json();
+      setQuiz(data);
+    };
+    fetchQuiz();
   }, [quizId]);
 
-  if (!quiz) return <div className="text-center mt-20">Loading...</div>;
+  if (!quiz) return null;
 
+  const question = quiz.questions[0];
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-500 to-purple-600 p-6">
-      <h1 className="text-4xl font-bold text-white text-center mb-10">
-        {quiz.title}
-      </h1>
+    <div className="h-screen flex flex-col bg-white">
+      <div className="h-12 bg-purple-600 flex items-center justify-between px-4"></div>
 
-      <div className="max-w-3xl mx-auto space-y-8">
-        {questions.map((q, index) => (
-          <div key={q.id} className="bg-white rounded-2xl shadow-xl p-6">
-            <h2 className="text-2xl font-semibold mb-6">{q.question}</h2>
+      <div className="flex-1 flex items-center justify-center text-4xl font-semibold">
+        {question.question}
+      </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {q.options.map((opt) => (
-                <button
-                  key={opt.id}
-                  className="bg-indigo-100 hover:bg-indigo-200 transition rounded-xl p-4 text-lg font-medium text-indigo-900 shadow"
-                >
-                  {opt.text}
-                </button>
-              ))}
-            </div>
-          </div>
+      <div className="h-[45%] grid grid-cols-2 grid-rows-2 gap-2 p-2">
+        {question.options.map((opt, i) => (
+          <button
+            key={opt.id}
+            className={`${colors[i]} text-white text-3xl font-semibold rounded-md flex items-center justify-center cursor-pointer
+          transition-all
+          hover:-translate-y-1 
+          active:translate-y-1 active:shadow-[0_1px_0_#27408B]"`}
+          >
+            {opt.text}
+          </button>
         ))}
       </div>
     </div>
   );
-};
-
-export default Page;
+}
