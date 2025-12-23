@@ -252,9 +252,9 @@ const Page = () => {
             shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF]
              hover:-translate-y-1 active:translate-y-1   
             relative -right-2 transition-all hover:text-white"
-                  onClick={() => push(`/classroom/quizzes/${classroom.id}`)}
+                  onClick={() => push(`/quiz-create/${classroom.id}`)}
                 >
-                  View Quizzes
+                  Quizzes
                 </Button>
 
                 <div className="flex items-center gap-1">

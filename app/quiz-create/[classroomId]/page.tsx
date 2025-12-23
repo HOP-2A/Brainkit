@@ -125,8 +125,10 @@ const Page = () => {
       toast.success("Quiz created successfully");
       GetClass();
       setTitle("");
+      setCode("");
       setDescription("");
       setImgFile(null);
+
       setImageUrl("");
     } catch (err) {
       toast.error("Error creating quiz!");

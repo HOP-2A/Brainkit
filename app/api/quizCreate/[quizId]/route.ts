@@ -3,7 +3,7 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, creatorId, classroomId, description, coverImg } = body;
+    const { title, creatorId, classroomId, description, coverImg, code } = body;
     if (!title)
       return NextResponse.json({ error: "Title heregtei" }, { status: 401 });
     else {
@@ -14,6 +14,7 @@ export async function POST(req: Request) {
           classroomId,
           description,
           coverImg: coverImg ?? "",
+          code,
         },
       });
 
@@ -41,7 +42,11 @@ export const GET = async (
         id: quizId,
       },
       include: {
-        questions: true,
+        questions: {
+          include: {
+            options: true,
+          },
+        },
       },
     });
 

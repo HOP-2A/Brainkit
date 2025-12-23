@@ -56,7 +56,7 @@ model Quiz {
   description String?
   coverImg    String?
   classroomId String
-  code        String?              @unique
+  code        String              @unique
   classroom   Classroom            @relation(fields: [classroomId], references: [id])
   creatorId   String
   creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
