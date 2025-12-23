@@ -6,10 +6,17 @@ export async function DELETE(req: Request) {
   const { questionId } = body;
 
   try {
-    const deletedQuestion = await prisma.quizQuestion.delete({
-      where: { id: questionId },
+    await prisma.quizOption.deleteMany({
+      where: {
+        questionId: questionId,
+      },
     });
 
+    const deletedQuestion = await prisma.quizQuestion.delete({
+      where: {
+        id: questionId,
+      },
+    });
     return NextResponse.json(deletedQuestion, { status: 200 });
   } catch (err) {
     return NextResponse.json(err), { status: 500 };

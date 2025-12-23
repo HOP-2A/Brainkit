@@ -1,44 +1,70 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { question, quizId, text, isCorrect, questionId, timer } = body;
-    if (!question || !text)
+    const { question, quizId, timer, options } = await req.json();
+
+    if (!question || !quizId || !options?.length) {
+      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+    }
+
+    const normalizedTexts = options.map((opt: any) =>
+      opt.text.trim().toLowerCase()
+    );
+
+    const hasDuplicate =
+      new Set(normalizedTexts).size !== normalizedTexts.length;
+    if (hasDuplicate) {
       return NextResponse.json(
-        { error: "question cannot be empty and answers cannot be empty" },
-        { status: 401 }
+        { error: "Duplicate option text is not allowed" },
+        { status: 400 }
       );
-    if (!quizId || !questionId)
-      return NextResponse.json(
-        { error: "Ymar quiztei , question holbootoigoo tavij ugnu uu" },
-        { status: 401 }
-      );
-    else {
-      await prisma.quizQuestion.create({
+    } else {
+      const createdQuestion = await prisma.quizQuestion.create({
         data: {
           question,
-          quizId,
           timer,
+          quiz: {
+            connect: {
+              id: quizId,
+            },
+          },
+          options: {
+            create: options.map((opt: any) => ({
+              text: opt.text,
+              isCorrect: opt.isCorrect,
+            })),
+          },
         },
       });
 
-      await prisma.quizOption.create({
-        data: {
-          text,
-          questionId,
-          isCorrect,
-        },
-      });
-      return NextResponse.json(
-        { message: "successfully created question and options" },
-        { status: 200 }
-      );
+      return NextResponse.json(createdQuestion, { status: 201 });
     }
+
+    const createdQuestion = await prisma.quizQuestion.create({
+      data: {
+        question,
+        timer,
+        quiz: {
+          connect: {
+            id: quizId,
+          },
+        },
+        options: {
+          create: options.map((opt: any) => ({
+            text: opt.text,
+            isCorrect: opt.isCorrect,
+          })),
+        },
+      },
+    });
+
+    return NextResponse.json(createdQuestion, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { message: "aldaa garchlaa", error },
-      { status: 404 }
+      { error: "Server error", details: error },
+      { status: 500 }
     );
   }
 }

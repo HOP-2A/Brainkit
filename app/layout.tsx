@@ -62,6 +62,7 @@ export default function RootLayout({
           </header>
 
           {children}
+          <Toaster toastOptions={{ duration: 1500 }} richColors={true} />
         </body>
       </html>
     </ClerkProvider>

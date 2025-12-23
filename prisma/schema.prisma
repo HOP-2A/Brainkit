@@ -56,7 +56,7 @@ model Quiz {
   description String?
   coverImg    String?
   classroomId String
-  code        String               @unique
+  code        String              @unique
   classroom   Classroom            @relation(fields: [classroomId], references: [id])
   creatorId   String
   creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
@@ -82,7 +82,7 @@ model QuizOption {
   text           String
   isCorrect      Boolean         @default(false)
   questionId     String
-  question       QuizQuestion    @relation(fields: [questionId], references: [id])
+  question       QuizQuestion    @relation(fields: [questionId], references: [id], onDelete: Cascade)
   studentAnswers StudentAnswer[]
 }
 
