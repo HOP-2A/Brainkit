@@ -4,16 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-<<<<<<< HEAD
 import { PenLine } from "lucide-react";
 import { Trash } from "lucide-react";
 import {
   Dialog,
   DialogClose,
-=======
-import {
-  Dialog,
->>>>>>> e42c12f (question frontend)
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -22,7 +17,6 @@ import {
 import { Save, X } from "lucide-react";
 import SideBar from "@/app/_components/SideBar";
 import { toast } from "sonner";
-<<<<<<< HEAD
 import { Button } from "@/components/ui/button";
 
 type Questions = {
@@ -31,14 +25,6 @@ type Questions = {
   question: string;
   timer: string;
   options: Option[];
-=======
-
-type Questions = {
-  id: string;
-  title: string;
-  description: string;
-  creatorId: string;
->>>>>>> e42c12f (question frontend)
 };
 
 type Quiz = {
@@ -64,14 +50,11 @@ const Page = () => {
 
   const [question, setQuestion] = useState("");
   const [timer, setTimer] = useState<number>(20);
-<<<<<<< HEAD
   const [mounted, setMounted] = useState(false);
   const [openQuestionId, setOpenQuestionId] = useState<string | null>(null);
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(
     null
   );
-=======
->>>>>>> e42c12f (question frontend)
 
   const [options, setOptions] = useState<Option[]>([
     { text: "", isCorrect: false },
@@ -94,24 +77,19 @@ const Page = () => {
       }))
     );
   };
-<<<<<<< HEAD
-=======
 
->>>>>>> e42c12f (question frontend)
+
+
   const getQuiz = async () => {
     const res = await fetch(`/api/quizCreate/${quizId}`);
     if (!res.ok) return;
     const data: Quiz = await res.json();
     setQuiz(data);
-<<<<<<< HEAD
     setQuestions(data.questions ?? []);
   };
 
   const toggleQuestion = (id: string) => {
     setOpenQuestionId((prev) => (prev === id ? null : id));
-=======
-    setQuestions(data.questions);
->>>>>>> e42c12f (question frontend)
   };
 
   const createQuestion = async () => {
@@ -133,7 +111,6 @@ const Page = () => {
     if (res.ok) {
       toast.success("Question added 🎉");
       setQuestion("");
-<<<<<<< HEAD
       getQuiz();
       setTimer(20);
 
@@ -181,21 +158,11 @@ const Page = () => {
     }
   };
 
-=======
-      setOptions(options.map(() => ({ text: "", isCorrect: false })));
-      getQuiz();
-    } else {
-      toast.error("Failed to create question");
-    }
-  };
-
->>>>>>> e42c12f (question frontend)
   useEffect(() => {
     const fetchData = async () => await getQuiz();
     fetchData();
   }, [quizId]);
 
-<<<<<<< HEAD
   const updateQuestion = async (editQuestionId: string) => {
     const response = await fetch("/api/updateQuestion", {
       method: "PUT",
@@ -235,17 +202,11 @@ const Page = () => {
     setMounted(true);
   }, []);
 
-=======
->>>>>>> e42c12f (question frontend)
   return (
     <div className="flex gap-20">
       <SideBar />
 
-<<<<<<< HEAD
       <div className="border shadow-lg rounded-xl p-5 w-80 bg-white h-80">
-=======
-      <div className="border shadow-lg rounded-xl p-5 w-80 bg-white">
->>>>>>> e42c12f (question frontend)
         {quiz?.coverImg ? (
           <img
             src={quiz.coverImg}
@@ -260,7 +221,6 @@ const Page = () => {
         <div className="text-gray-600">{quiz?.description}</div>
       </div>
 
-<<<<<<< HEAD
       <div className="mt-6 space-y-4 ml-25">
         <div className="flex gap-2">
           <div className="shadow border rounded-xl w-53 h-12 flex items-center justify-center text-xl font-bold">
@@ -410,50 +370,6 @@ const Page = () => {
                     <div
                       key={index}
                       className={`${colors[index]}
-=======
-      <div className="mt-6 space-y-4">
-        <div className="shadow border rounded-xl w-52 h-12 flex items-center justify-center text-xl font-bold">
-          {questions.length} Questions
-        </div>
-
-        <Dialog>
-          <DialogTrigger className="bg-[#4169E1] text-white rounded-2xl font-semibold text-xl h-12 px-6 shadow-[0_4px_0_#27408B] hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]">
-            Add Question
-          </DialogTrigger>
-
-          <DialogContent className="max-w-5xl p-8">
-            <DialogHeader>
-              <DialogTitle>Add Question</DialogTitle>
-            </DialogHeader>
-
-            <Input
-              placeholder="Type your question here..."
-              className="h-20 text-lg font-semibold"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-
-            <Input
-              type="number"
-              placeholder="Timer (seconds)"
-              value={timer}
-              onChange={(e) => setTimer(Number(e.target.value))}
-            />
-
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              {options.map((opt, index) => {
-                const colors = [
-                  "bg-red-500",
-                  "bg-blue-500",
-                  "bg-yellow-400",
-                  "bg-green-500",
-                ];
-
-                return (
-                  <div
-                    key={index}
-                    className={`${colors[index]}
->>>>>>> e42c12f (question frontend)
                     h-50
                     px-2
                     py-2
@@ -462,7 +378,6 @@ const Page = () => {
                     shadow-md
                     hover:scale-[1.02]
                     transition`}
-<<<<<<< HEAD
                     >
                       <Checkbox
                         checked={opt.isCorrect}
@@ -508,37 +423,6 @@ const Page = () => {
             </DialogContent>
           </Dialog>
         )}
-=======
-                  >
-                    <Checkbox
-                      checked={opt.isCorrect}
-                      onCheckedChange={() => setCorrectOption(index)}
-                    />
-                    <Input
-                      className="bg-white text-black h-20 w-50 text-lg font-medium"
-                      placeholder={`Option ${index + 1}`}
-                      value={opt.text}
-                      onChange={(e) => updateOptionText(index, e.target.value)}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-end gap-4 mt-6">
-              <button className="flex items-center gap-2 text-gray-500">
-                <X /> Cancel
-              </button>
-              <button
-                onClick={createQuestion}
-                className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl"
-              >
-                <Save /> Save
-              </button>
-            </div>
-          </DialogContent>
-        </Dialog>
->>>>>>> e42c12f (question frontend)
       </div>
     </div>
   );
