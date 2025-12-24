@@ -25,7 +25,7 @@ import { useAuth } from "@/providers/useAuth";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import SideBar from "@/app/_components/SideBar";
+import SideBar from "@/app/teacher/_components/SideBar";
 import { toast } from "sonner";
 type Classroom = {
   id: string;

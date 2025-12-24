@@ -1,0 +1,56 @@
+"use client";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+
+export default function GamePlay() {
+  const router = useRouter();
+
+  return (
+    <div className="min-h-screen bg-[#6ACEDF] flex flex-col">
+      <div className="bg-blue-400 text-white flex items-center justify-between px-4 sm:px-8 py-4">
+        <span className="text-2xl sm:text-4xl font-extrabold">Brainket</span>
+        <span className="hidden sm:block text-3xl font-bold">Join a Game!</span>
+        <button
+          onClick={() => router.push("/students/classroom")}
+          className="sm:block text-3xl font-bold underline underline-offset-2"
+        >
+          Dashboard
+        </button>
+      </div>
+
+      <hr className="h-2 bg-blue-500 border-0" />
+
+      <div className="relative flex-1 flex flex-col items-center justify-center px-6 sm:px-12">
+        <div className="flex flex-col items-center gap-6 z-10 pb-60">
+          <div className="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-gray-800 text-center">
+            BRAINKET
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Input
+              className="bg-white w-80 sm:w-80 h-20 text-center
+               text-2xl placeholder:text-2xl
+               shadow-[0_6px_0_#CCCCCC]"
+              placeholder="Game ID"
+            />
+            <Button
+              className="bg-white w-20 h-20 flex items-center justify-center
+               rounded-xl shadow-[0_6px_0_#CCCCCC]
+               hover:bg-white hover:text-white transition-colors duration-200"
+            >
+              <ArrowRight className="text-black text-2xl" />
+            </Button>
+          </div>
+        </div>
+
+        <img
+          src="/penguin.gif"
+          alt="penguin"
+          className="absolute bg-black right-0 bottom-0 w-80 sm:w-[1000px] lg:w-[1000px]"
+        />
+      </div>
+    </div>
+  );
+}
