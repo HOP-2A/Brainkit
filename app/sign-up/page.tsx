@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/providers/useAuth";
 import { SignInButton, useUser } from "@clerk/nextjs";
 
 export default function SignUpPage() {
@@ -13,9 +14,13 @@ export default function SignUpPage() {
   const [role, setRole] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState();
-  const { user, isSignedIn } = useUser();
-  const router = useRouter();
+  const { user: clerkUser, isSignedIn } = useUser();
 
+  const clerkId = clerkUser?.id;
+  const { user } = useAuth(clerkId ?? "");
+  const teacherId = user?.id;
+  const router = useRouter();
+  console.log(user);
   const handleSubmit = async () => {
     setError(null);
 
@@ -33,17 +38,22 @@ export default function SignUpPage() {
     const data = await res.json();
 
     if (!res.ok) {
-      setError(data.error || "Something went wrong");
+      if (typeof data.error === "string") {
+        setError(data.error);
+      } else if (data.error?.errors?.[0]?.message) {
+        setError(data.error.errors[0].message);
+      } else {
+        setError("aldaa garsaan");
+      }
     } else {
-      router.push("/");
+      if (role === "STUDENT") {
+        router.push("/student/classroom");
+      } else if (role === "TEACHER") {
+        router.push("/teacher/my-sets");
+      }
     }
   };
-
-  useEffect(() => {
-    if (isSignedIn) {
-      router.push("/");
-    }
-  }, [isSignedIn]);
+  console.log(role);
 
   return (
     <div className="min-h-screen flex">
@@ -129,6 +139,37 @@ export default function SignUpPage() {
           </p>
         </div>
       </div>
+      <Input
+        className="w-50"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <Input
+        className="w-50"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        className="w-50"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <select
+        value={role}
+        onChange={(e) => setRole(e.target.value)}
+        className="border bg-blue-500 text-white rounded-lg p-2"
+      >
+        <option value="">Select Role</option>
+        <option value="TEACHER">Teacher</option>
+        <option value="STUDENT">Student</option>
+      </select>
+      {error && <p className="text-red-500">{error}</p>}
+      <Button onClick={handleSubmit} className="bg-blue-500 flex">
+        Sign Up
+      </Button>
     </div>
   );
 }
