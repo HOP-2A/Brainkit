@@ -38,6 +38,7 @@ export default function Page() {
 
   if (!quiz) return null;
 
+  console.log(quiz);
   const question = quiz.questions[0];
   return (
     <div className="h-screen flex flex-col bg-white">
