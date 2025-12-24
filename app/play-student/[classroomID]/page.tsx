@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import SideBar from "@/app/_components/SideBar";
 type Classroom = {
   id: string;
   title: string;
@@ -54,7 +53,6 @@ const Page = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      <SideBar />
       {classroom && (
         <div className="mb-6 rounded-xl bg-background p-6 shadow">
           <h1 className="text-2xl font-bold">{classroom.title}</h1>

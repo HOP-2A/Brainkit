@@ -15,9 +15,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Save, X } from "lucide-react";
-import SideBar from "@/app/_components/SideBar";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import UserMenu from "@/app/_component/UserMenu";
 
 type Questions = {
   id: string;
@@ -197,8 +197,7 @@ const Page = () => {
 
   return (
     <div className="flex gap-20">
-      <SideBar />
-
+    
       <div className="border shadow-lg rounded-xl p-5 w-80 bg-white h-80">
         {quiz?.coverImg ? (
           <img
