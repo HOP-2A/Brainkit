@@ -15,7 +15,6 @@ export async function POST(req: Request) {
           classroomId,
           description,
           coverImg: coverImg ?? "",
-          code,
         },
       });
 
@@ -44,9 +43,7 @@ export const GET = async (
       },
       include: {
         questions: {
-          include: {
-            options: true,
-          },
+          include: { options: true },
         },
       },
     });

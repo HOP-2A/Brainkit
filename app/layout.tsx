@@ -38,6 +38,27 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <SignedOut>
+              <SignInButton>
+                <button
+                  className="bg-[#4169E1] text-white rounded-2xl font-semibold 
+          text-xl h-12 px-6 cursor-pointer
+          shadow-[0_4px_0_#27408B] transition-all
+          hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]
+          active:translate-y-1 active:shadow-[0_1px_0_#27408B]"
+                >
+                  Log in
+                </button>
+              </SignInButton>
+              <SignUp />
+            </SignedOut>
+
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </header>
+
           {children}
           <Toaster toastOptions={{ duration: 1500 }} richColors={true} />
         </body>

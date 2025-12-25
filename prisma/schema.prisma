@@ -17,7 +17,6 @@ datasource db {
 model Teacher {
   id             String      @id @default(nanoid())
   email          String      @unique
-  role           Role        @default(TEACHER)
   name           String
   clerkId        String      @unique
   createdClasses Classroom[] @relation("TeacherClasses")
@@ -26,19 +25,14 @@ model Teacher {
 }
 
 model Student {
-  id          String     @id @default(nanoid())
-  email       String     @unique
-  role        Role       @default(STUDENT)
-  clerkId     String     @unique
-  name        String
-  classRoomId String?
-  classRoom   Classroom? @relation(fields: [classRoomId], references: [id])
-  createdAt   DateTime   @default(now())
-}
-
-enum Role {
-  TEACHER
-  STUDENT
+  id           String               @id @default(nanoid())
+  email        String               @unique
+  clerkId      String               @unique
+  name         String
+  classRoomId  String?
+  classRoom    Classroom?           @relation(fields: [classRoomId], references: [id])
+  quizAttempts StudentQuizAttempt[]
+  createdAt    DateTime             @default(now())
 }
 
 model Classroom {
@@ -57,62 +51,60 @@ model Classroom {
 }
 
 model Quiz {
-  id          String         @id @default(nanoid())
+  id          String               @id @default(nanoid())
   title       String
   description String?
   coverImg    String?
   classroomId String
-  code        String         @unique
-  classroom   Classroom      @relation(fields: [classroomId], references: [id])
+  code        String               @unique
+  classroom   Classroom            @relation(fields: [classroomId], references: [id])
   creatorId   String
-  creator     Teacher        @relation("TeacherQuizzes", fields: [creatorId], references: [id])
+  creator     Teacher              @relation("TeacherQuizzes", fields: [creatorId], references: [id])
   questions   QuizQuestion[]
-  attempts    QuizAttempt[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  attempts    StudentQuizAttempt[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
 }
 
 model QuizQuestion {
-  id        String       @id @default(nanoid())
-  question  String
-  quizId    String
-  timer     Int
-  quiz      Quiz         @relation(fields: [quizId], references: [id])
-  options   QuizOption[]
-  createdAt DateTime     @default(now())
-
-  answers Answer[]
+  id             String          @id @default(nanoid())
+  question       String
+  quizId         String
+  timer          Int
+  quiz           Quiz?           @relation(fields: [quizId], references: [id])
+  options        QuizOption[]
+  createdAt      DateTime        @default(now())
+  studentAnswers StudentAnswer[]
 }
 
 model QuizOption {
-  id         String       @id @default(nanoid())
-  text       String
-  isCorrect  Boolean      @default(false)
-  questionId String
-  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
-  answers Answer[]
+  id             String          @id @default(nanoid())
+  text           String
+  isCorrect      Boolean         @default(false)
+  questionId     String
+  question       QuizQuestion    @relation(fields: [questionId], references: [id])
+  studentAnswers StudentAnswer[]
 }
 
-model QuizAttempt {
-  id       String @id @default(nanoid())
-  quizId   String
-  userId   String
-  userRole Role
+model StudentQuizAttempt {
+  id        String  @id @default(nanoid())
+  studentId String
+  quizId    String
+  student   Student @relation(fields: [studentId], references: [id])
+  quiz      Quiz    @relation(fields: [quizId], references: [id])
 
-  quiz      Quiz     @relation(fields: [quizId], references: [id])
-  answers   Answer[]
-  score     Int      @default(0)
-  createdAt DateTime @default(now())
+  answers   StudentAnswer[]
+  score     Int             @default(0)
+  createdAt DateTime        @default(now())
 }
 
-model Answer {
+model StudentAnswer {
   id         String @id @default(nanoid())
   attemptId  String
   questionId String
   optionId   String
 
-  attempt  QuizAttempt  @relation(fields: [attemptId], references: [id])
-  question QuizQuestion @relation(fields: [questionId], references: [id])
-  option   QuizOption   @relation(fields: [optionId], references: [id])
+  attempt  StudentQuizAttempt @relation(fields: [attemptId], references: [id])
+  question QuizQuestion       @relation(fields: [questionId], references: [id])
+  option   QuizOption         @relation(fields: [optionId], references: [id])
 }

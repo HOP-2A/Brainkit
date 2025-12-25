@@ -55,7 +55,7 @@ const Page = () => {
     setImageUrl(uploaded.url);
     setUploading(false);
   };
-
+  console.log(user?.id);
   const createClass = async () => {
     const response = await fetch(`/api/classroom-create/${clerkId}`, {
       method: "POST",
