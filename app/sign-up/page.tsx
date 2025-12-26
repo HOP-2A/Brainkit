@@ -105,8 +105,8 @@ export default function SignUpPage() {
               className="border rounded-lg p-2 w-full"
             >
               <option value="">Who are you ?</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
+              <option value="STUDENT">Student</option>
+              <option value="TEACHER">Teacher</option>
             </select>
 
             {error && (
@@ -139,37 +139,6 @@ export default function SignUpPage() {
           </p>
         </div>
       </div>
-      <Input
-        className="w-50"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <Input
-        className="w-50"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Input
-        className="w-50"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-        className="border bg-blue-500 text-white rounded-lg p-2"
-      >
-        <option value="">Select Role</option>
-        <option value="TEACHER">Teacher</option>
-        <option value="STUDENT">Student</option>
-      </select>
-      {error && <p className="text-red-500">{error}</p>}
-      <Button onClick={handleSubmit} className="bg-blue-500 flex">
-        Sign Up
-      </Button>
     </div>
   );
 }

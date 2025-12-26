@@ -9,18 +9,11 @@ export async function POST(req: Request) {
     if (!quizId)
       return NextResponse.json({ error: "quizId alga" }, { status: 401 });
     else {
-      await prisma.studentQuizAttempt.create({
-        data: {
-          studentId,
-          quizId,
-          score,
-        },
+      const attempt = await prisma.studentQuizAttempt.create({
+        data: { studentId, quizId, score },
       });
 
-      return NextResponse.json(
-        { message: "successfully created quizattempt" },
-        { status: 200 }
-      );
+      return NextResponse.json(attempt, { status: 200 });
     }
   } catch (error) {
     return NextResponse.json(
