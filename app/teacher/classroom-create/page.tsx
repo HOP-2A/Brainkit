@@ -68,7 +68,7 @@ const Page = () => {
         name: inputValues.className,
         code: inputValues.classCode,
       }),
-    }); 
+    });
     console.log(response);
     if (response.ok) {
       toast.success("Classroom successfully created!");
@@ -76,7 +76,7 @@ const Page = () => {
       const data = await response.json();
 
       setClassroom(data);
-      push(`/quiz-create/${data.message.id}`);
+      push(`/teacher/create-quiz/${data.message.id}`);
     } else {
       toast.error("Error");
     }
@@ -86,9 +86,14 @@ const Page = () => {
     <div className="min-h-screen flex bg-[#f4f6ff]">
       <SideBar />
 
-      <div className="flex-1 p-10">
-        <div className="flex gap-10">
-          <Card className="w-[480px] shadow-md border border-gray-200">
+      <div className="flex-1 flex flex-col">
+        <div className="p-8">
+          <h1 className="text-5xl font-bold text-gray-900">Create Classes</h1>
+          <div className="mt-4 h-[2px] bg-gray-300 rounded -mx-8" />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-10 px-6 md:px-8 mt-2">
+          <Card className="w-full md:w-[480px] shadow-md border border-gray-200">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-gray-700">
                 Cover Image (optional)
@@ -101,7 +106,7 @@ const Page = () => {
                   className="w-full h-64 object-cover rounded-xl border"
                 />
               ) : (
-                <div className="w-full h-64 border-2 border-dashed rounded-xl flex flex-col items-center justify-center bg-gray-50 text-gray-400">
+                <div className="w-full h-64 border-2 border-dashed flex flex-col items-center justify-center bg-gray-50 text-gray-400">
                   <ImageIcon className="w-12 h-12 opacity-50" />
                   <span className="text-sm mt-2">No image uploaded</span>
 
@@ -118,17 +123,17 @@ const Page = () => {
                 onClick={uploadedImg}
                 disabled={!imgFile || uploading}
                 className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white"
+                shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
+                transition-all hover:bg-blue-800"
               >
                 {uploading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     Uploading...
                   </>
                 ) : (
                   <>
-                    <UploadCloud className="w-4 h-4" />
+                    <UploadCloud className="w-4 h-4 mr-2" />
                     Upload Image
                   </>
                 )}
@@ -136,72 +141,73 @@ const Page = () => {
             </CardContent>
           </Card>
 
-          {/* FORM SECTION */}
-          <Card className="flex-1 shadow-md border border-gray-200 p-6 mr-20">
+          <Card className="flex-1 shadow-md border border-gray-200 p-4">
             <CardContent className="space-y-6">
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Title <label className="text-red-700">(required)</label>
+                  Title <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Enter classroom title"
                   value={inputValues.title}
                   name="title"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
 
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Description{" "}
-                  <label className="text-gray-600">(optional)</label>
+                  Description <span className="text-gray-600">(optional)</span>
                 </label>
                 <Input
                   placeholder="Enter a classroom description"
                   value={inputValues.description}
                   name="description"
                   onChange={hangleInputs}
-                  className="mt-1 h-15 border-solid border-gray-200 border-3"
+                  className="mt-1 h-[60px] border border-gray-200 rounded"
                 />
               </div>
 
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Class Name <label className="text-red-700">(required)</label>
+                  Class Name <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Enter class name"
                   value={inputValues.className}
                   name="className"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
 
               <div>
-                <label className="text-2xl text-gray-700 font-bold ">
-                  Class Code <label className="text-red-700">(required)</label>
+                <label className="text-2xl text-gray-700 font-bold">
+                  Class Code <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Create a join code for your class"
                   value={inputValues.classCode}
                   name="classCode"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
             </CardContent>
           </Card>
         </div>
-        <Button
-          onClick={createClass}
-          className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white mt-20"
-        >
-          Create Classroom
-        </Button>
+
+        <div className="mt-6 p-6">
+          <Button
+            onClick={createClass}
+            className="bg-[#0BC2CF] text-white text-xl font-bold py-4 w-122
+                   shadow-[0_6px_0_#09AEB9] hover:bg-[#09AEB9] hover:-translate-y-1
+                   hover:shadow-[0_10px_0_#0898A3] transition-all"
+          >
+            Create Class
+          </Button>
+        </div>
       </div>
     </div>
   );

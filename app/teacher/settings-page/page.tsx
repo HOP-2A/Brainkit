@@ -7,7 +7,7 @@ export default function SettingsPage() {
 
       <div className="flex-1 p-8">
         <div className="mb-6">
-          <h1 className="text-4xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-5xl font-bold text-gray-900">Settings</h1>
           <div className="mt-4 h-[2px] bg-gray-300 rounded -mx-8" />
         </div>
       </div>

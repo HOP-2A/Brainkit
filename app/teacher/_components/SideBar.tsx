@@ -54,22 +54,27 @@ export default function SideBar() {
         <ul className="flex flex-col gap-3">
           {menuItems.map((item) => {
             const isActive = pathname === item.path;
+
             return (
               <li
                 key={item.name}
                 onClick={() => router.push(item.path)}
-                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer
-                text-white font-semibold text-xl transition-colors relative
-                hover:bg-white hover:text-black`}
+                className={`group flex items-center gap-3 p-3 rounded-lg cursor-pointer
+        font-semibold text-xl transition-all relative
+        ${
+          isActive
+            ? "bg-white text-black"
+            : "text-white hover:bg-white hover:text-black"
+        }`}
               >
                 <span
                   className={`absolute left-0 top-0 h-full w-1 rounded-r-md transition-all
-                ${
-                  isActive
-                    ? "bg-white"
-                    : "bg-transparent group-hover:bg-white rounded-2xl"
-                }`}
-                ></span>
+          ${
+            isActive
+              ? "bg-[#9a49aa]"
+              : "bg-transparent group-hover:bg-[#9a49aa]"
+          }`}
+                />
 
                 {item.icon}
                 <span className="ml-2">{item.name}</span>
@@ -89,7 +94,7 @@ export default function SideBar() {
         </div>
       </aside>
 
-      <div className="absolute right-6 mt-6">
+      <div className="absolute right-6 mt-6 scale-125">
         <UserButton />
       </div>
     </div>
