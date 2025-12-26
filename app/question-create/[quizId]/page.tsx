@@ -183,17 +183,6 @@ const Page = () => {
       getQuiz();
     }
   };
-  const startAdd = () => {
-    setEditingQuestionId(null);
-    setQuestion("");
-    setTimer(20);
-    setOptions([
-      { text: "", isCorrect: false },
-      { text: "", isCorrect: false },
-      { text: "", isCorrect: false },
-      { text: "", isCorrect: false },
-    ]);
-  };
 
   return (
     <div className="flex gap-20">
@@ -235,7 +224,15 @@ const Page = () => {
           <DialogTrigger
             className="bg-[#4169E1] text-white rounded-2xl font-semibold text-xl h-12 px-6 shadow-[0_4px_0_#27408B] hover:-translate-y-1 hover:shadow-[0_6px_0_#27408B]"
             onClick={() => {
-              startAdd;
+              setEditingQuestionId(null);
+              setQuestion("");
+              setTimer(20);
+              setOptions([
+                { text: "", isCorrect: false },
+                { text: "", isCorrect: false },
+                { text: "", isCorrect: false },
+                { text: "", isCorrect: false },
+              ]);
             }}
           >
             Add Question
