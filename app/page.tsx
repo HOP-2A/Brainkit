@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-
 const Page = () => {
   const router = useRouter();
   const { isSignedIn } = useUser();
@@ -34,7 +33,7 @@ const Page = () => {
              hover:bg-gray-100 shadow-[0_4px_0_rgba(156,163,175,1)] transition-all duration-200 ease-out
              hover:brightness-110 hover:-translate-y-1"
             >
-              Log In
+              Log in
             </button>
           </SignInButton>
         </div>
