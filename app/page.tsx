@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { SignInButton, useUser } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const router = useRouter();
