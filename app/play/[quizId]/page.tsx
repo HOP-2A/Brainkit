@@ -196,7 +196,7 @@ export default function Page() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-60 w-full max-w-3xl ">
             {question?.options.map((opt, i) => (
               <button
                 key={opt.id}

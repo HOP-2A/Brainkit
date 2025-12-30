@@ -3,9 +3,38 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 export default function GamePlay() {
   const router = useRouter();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+
+  const joinQuiz = async () => {
+    setError("");
+    if (!code.trim()) return;
+
+    try {
+      const res = await fetch("/api/find-classroombycode", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError("Invalid game code");
+        return;
+      }
+      router.push(`/students/join-quiz/${data.id}`);
+    } catch (err) {
+      setError("Failed to connect to server");
+      console.log(err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#6ACEDF] flex flex-col">
@@ -28,23 +57,28 @@ export default function GamePlay() {
             BRAINKET
           </div>
 
-          <div className="flex items-center gap-4">
-            <Input
-              className="bg-white w-80 sm:w-80 h-20 text-center
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-4">
+              <Input
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="bg-white w-80 sm:w-80 h-20 text-center
                text-2xl placeholder:text-2xl
                shadow-[0_6px_0_#CCCCCC]"
-              placeholder="Game ID"
-            />
-            <Button
-              className="bg-white w-20 h-20 flex items-center justify-center
+                placeholder="Classroom ID"
+              />
+              <Button
+                onClick={joinQuiz}
+                className="bg-white w-20 h-20 flex items-center justify-center
                rounded-xl shadow-[0_6px_0_#CCCCCC]
                hover:bg-white hover:text-white transition-colors duration-200"
-            >
-              <ArrowRight className="text-black text-2xl" />
-            </Button>
+              >
+                <ArrowRight className="text-black text-2xl" />
+              </Button>
+            </div>
+            {error && <p className="text-red-600 text-lg mt-2">{error}</p>}
           </div>
         </div>
-
         <img
           src="/penguin.gif"
           alt="penguin"

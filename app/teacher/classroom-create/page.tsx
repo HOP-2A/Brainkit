@@ -68,7 +68,7 @@ const Page = () => {
         name: inputValues.className,
         code: inputValues.classCode,
       }),
-    }); 
+    });
     console.log(response);
     if (response.ok) {
       toast.success("Classroom successfully created!");
@@ -76,7 +76,7 @@ const Page = () => {
       const data = await response.json();
 
       setClassroom(data);
-      push(`/quiz-create/${data.message.id}`);
+      push(`/teacher/create-quiz/${data.message.id}`);
     } else {
       toast.error("Error");
     }

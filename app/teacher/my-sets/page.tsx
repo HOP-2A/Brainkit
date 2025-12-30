@@ -241,7 +241,6 @@ const Page = () => {
                 </p>
               </div>
 
-              {/* FOOTER */}
               <div className="border-t px-3 py-2 flex items-center justify-between">
                 <Button
                   variant="outline"
@@ -252,7 +251,7 @@ const Page = () => {
             shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF]
              hover:-translate-y-1 active:translate-y-1   
             relative -right-2 transition-all hover:text-white"
-                  onClick={() => push(`/quiz-create/${classroom.id}`)}
+                  onClick={() => push(`/teacher/create-quiz/${classroom.id}`)}
                 >
                   Quizzes
                 </Button>

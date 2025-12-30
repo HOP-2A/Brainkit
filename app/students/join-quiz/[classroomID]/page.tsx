@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
+
 type Classroom = {
   id: string;
   title: string;
@@ -27,12 +28,12 @@ type Quiz = {
 const Page = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [classroom, setClassroom] = useState<Classroom | null>(null);
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
 
   const params = useParams();
   const classroomId = params.classroomID as string;
   const router = useRouter();
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
 
   const GetClass = async () => {
     try {
@@ -52,37 +53,42 @@ const Page = () => {
   }, [classroomId]);
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen bg-gray-50 p-6">
       {classroom && (
-        <div className="mb-6 rounded-xl bg-background p-6 shadow">
-          <h1 className="text-2xl font-bold">{classroom.title}</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            {classroom.description}
-          </p>
+        <div className="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
+          <h1 className="text-3xl font-bold text-gray-900">
+            {classroom.title}
+          </h1>
+          <p className="text-sm text-gray-500 mt-2">{classroom.description}</p>
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {quizzes.length > 0 ? (
           quizzes.map((q) => (
             <div
               key={q.id}
-              className="rounded-xl border bg-background p-4 shadow-sm hover:shadow-md transition"
+              className="flex flex-col rounded-xl border bg-white p-5 shadow hover:shadow-lg transition duration-300"
             >
-              <div className="text-lg font-semibold">{q.title}</div>
-              <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+              <div className="text-xl font-semibold text-gray-900">
+                {q.title}
+              </div>
+              <p className="text-sm text-gray-500 mt-1 line-clamp-2">
                 {q.description}
               </p>
+
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="sm" className="mt-3 w-full">
+                  <Button size="sm" className="mt-4 w-full">
                     Play
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent>
+                <DialogContent className="max-w-sm">
                   <DialogHeader>
-                    <strong className="text-lg">Play {q.title}</strong>
+                    <strong className="text-lg text-gray-900">
+                      Play {q.title}
+                    </strong>
                   </DialogHeader>
 
                   <Input
@@ -92,6 +98,7 @@ const Page = () => {
                       setCode(e.target.value);
                       setError("");
                     }}
+                    className="mt-3"
                   />
 
                   {error && (
@@ -115,7 +122,7 @@ const Page = () => {
             </div>
           ))
         ) : (
-          <div className="col-span-full text-center text-muted-foreground">
+          <div className="col-span-full text-center text-gray-400">
             No quiz yet.
           </div>
         )}

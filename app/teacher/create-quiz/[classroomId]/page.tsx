@@ -347,7 +347,7 @@ const Page = () => {
 
               <h3
                 className="text-lg font-bold mb-1 hover:underline cursor-pointer"
-                onClick={() => push(`/question-create/${q.id}`)}
+                onClick={() => push(`/teacher/question-create/${q.id}`)}
               >
                 {q.title}
               </h3>
