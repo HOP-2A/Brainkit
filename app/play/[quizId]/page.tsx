@@ -19,7 +19,7 @@ type Quiz = {
   questions: Question[];
 };
 
-const colors = ["bg-orange-400", "bg-blue-500", "bg-green-500", "bg-red-600"];
+const colors = ["bg-orange-400", "bg-blue-500", "bg-green-500", "bg-red-500"];
 
 export default function Page() {
   const params = useParams();
