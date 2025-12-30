@@ -30,11 +30,13 @@ export default function GamePlay() {
 
           <div className="flex items-center gap-4">
             <Input
-              className="bg-white w-80 sm:w-80 h-20 text-center
-               text-2xl placeholder:text-2xl
-               shadow-[0_6px_0_#CCCCCC]"
+              type="text"
+              className="bg-white w-80 h-20 text-center text-9xl placeholder:text-2xl border-2 border-gray-300
+              shadow-[0_6px_0_#CCCCCC] focus:outline-none focus:ring-2 focus:ring-[#0BC2CF] focus:border-[#0BC2CF]
+  "
               placeholder="Game ID"
             />
+
             <Button
               className="bg-white w-20 h-20 flex items-center justify-center
                rounded-xl shadow-[0_6px_0_#CCCCCC]
