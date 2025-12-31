@@ -40,6 +40,7 @@ export default function Page() {
   const { user } = useAuth(clerkId ?? "");
   const studentId = user?.id;
 
+  console.log("Student ID:", studentId);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [timer, setTimer] = useState(0);
   const [count, setCount] = useState(0);
@@ -52,7 +53,6 @@ export default function Page() {
   const [finished, setFinished] = useState(false);
   const [quizResult, setQuizResult] = useState<Result | null>(null);
 
-  // Fetch quiz
   useEffect(() => {
     const fetchQuiz = async () => {
       const res = await fetch(`/api/quizCreate/${quizId}`);
@@ -64,7 +64,6 @@ export default function Page() {
     fetchQuiz();
   }, [quizId]);
 
-  // Create attempt
   useEffect(() => {
     if (!studentId || !quizId) return;
     const createAttempt = async () => {
@@ -81,7 +80,6 @@ export default function Page() {
     createAttempt();
   }, [studentId, quizId]);
 
-  // Handle answer click
   const studentAnswer = async (
     questionId: string,
     optionId: string,
@@ -107,22 +105,30 @@ export default function Page() {
       setScore((prev) => prev + 1);
     }
 
-    setTimeout(() => {
-      if (count + 1 < quiz!.questions.length) {
-        const next = count + 1;
-        setCount(next);
-        setTimer(quiz!.questions[next].timer);
-      } else {
-        setFinished(true);
-        fetchQuizResult();
-      }
+   
+    goToNextQuestion();
 
-      setAnswered(false);
-      setAnswerLoading(false);
-    }, 400); // small delay for animation feel
+    setAnswered(false);
+    setAnswerLoading(false);
   };
 
-  // Timer countdown
+  const goToNextQuestion = () => {
+    if (!quiz) return;
+
+  
+    if (count + 1 >= quiz.questions.length) {
+      setFinished(true);
+      fetchQuizResult();
+      setTimer(0);
+      return;
+    }
+
+ 
+    const next = count + 1;
+    setCount(next);
+    setTimer(quiz.questions[next].timer);
+  };
+
   useEffect(() => {
     if (finished || timer <= 0) return;
 
@@ -130,14 +136,7 @@ export default function Page() {
       setTimer((t) => {
         if (t <= 1) {
           clearInterval(interval);
-          if (count + 1 < quiz!.questions.length) {
-            const next = count + 1;
-            setCount(next);
-            setTimer(quiz!.questions[next].timer);
-          } else {
-            setFinished(true);
-            fetchQuizResult();
-          }
+          goToNextQuestion(); 
           return 0;
         }
         return t - 1;
@@ -145,9 +144,7 @@ export default function Page() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timer, count, finished, quiz]);
-
-  // Fetch result
+  }, [timer, finished, count, quiz]);
   const fetchQuizResult = async () => {
     if (!attemptId) return;
     const res = await fetch(`/api/quizResult/${attemptId}`);
@@ -155,6 +152,7 @@ export default function Page() {
     setQuizResult(data);
   };
 
+  console.log(attemptId, "a");
   if (pageLoading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -166,9 +164,9 @@ export default function Page() {
 
   if (!question) return null;
 
+  console.log(quizResult);
   return (
     <div className="h-screen flex flex-col bg-gray-50 p-4">
-      {/* Header */}
       <div className="h-12 bg-purple-600 flex items-center justify-between px-4 rounded-lg">
         <h1 className="text-2xl md:text-3xl font-bold text-white">
           {quiz?.title}
@@ -178,13 +176,11 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Question */}
       <div className="flex-1 flex flex-col items-center justify-center mt-6">
         <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-3xl text-center text-2xl md:text-3xl font-semibold mb-6">
           {question?.question}
         </div>
 
-        {/* Options */}
         {timer === 0 ? (
           <div className="text-center mt-10">
             <h2 className="text-4xl font-bold mb-4">Quiz дууслаа!</h2>
@@ -204,7 +200,7 @@ export default function Page() {
                 onClick={() =>
                   studentAnswer(question.id, opt.id, opt.isCorrect)
                 }
-                className={`${colors[i]} text-white text-2xl md:text-3xl font-bold rounded-xl p-6 shadow-md hover:scale-105 transition transform disabled:opacity-50 disabled:cursor-not-allowed w-[500px] h-[300px] mr-20`}
+                className={`${colors[i]} text-white text-2xl md:text-3xl font-bold rounded-xl p-6 shadow-md hover:scale-105 transition transform disabled:opacity-50 disabled:cursor-not-allowed w-[400px] h-[400px] mr-20`}
               >
                 {opt.text}
               </button>
@@ -213,7 +209,6 @@ export default function Page() {
         )}
       </div>
 
-      {/* Loading spinner overlay */}
       {pageLoading && (
         <div className="absolute inset-0 flex justify-center items-center bg-white/70 z-50">
           <strong className="text-5xl flex flex-col items-center">
