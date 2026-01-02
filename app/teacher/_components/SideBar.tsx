@@ -35,7 +35,10 @@ export default function SideBar() {
 
   return (
     <div className="min-h-screen flex bg-[#f4f6ff]">
-      <aside className="w-56 bg-[#9a49aa] text-white flex flex-col p-6">
+      <aside
+        className="w-56 bg-[#9a49aa] text-white flex flex-col p-6"
+        style={{ boxShadow: "0 -6px 10px rgba(0,0,0,0.3) inset" }}
+      >
         <h2 className="text-4xl font-bold mb-6">BRAINKET</h2>
 
         <button

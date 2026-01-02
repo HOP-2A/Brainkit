@@ -121,9 +121,12 @@ export default function SignUpPage() {
       <div className="w-1/2 bg-[url('/image.jpg')] bg-cover relative overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle,_white_1px,_transparent_1px)] bg-[length:40px_40px]" />
 
-        <img src="/jump.gif" width={5000} className=" ml-[390px] mt-40" />
+        <img
+          src="/jump.gif"
+          className=" ml-[190px] w-[4000px] h-[1000px] mt-40"
+        />
         <img src="/snow02.gif" className="h-[1000px] w-[1200px] absolute" />
-        {/* <img src="/white.png" className="" /> */}
+        {/* <img src="/white.png"  className="absolute bottom-0 left-0 w-full h-[220px] object-cover z-30 pl-50" /> */}
       </div>
     </div>
   );

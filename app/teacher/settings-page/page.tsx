@@ -1,8 +1,17 @@
 "use client";
 import { useState } from "react";
 import SideBar from "../_components/SideBar";
+import { useUser } from "@clerk/nextjs";
+import { useAuth } from "@/providers/useAuth";
 export default function SettingsPage() {
   const [active, setActive] = useState("Profile");
+
+  const { user: clerkUser } = useUser();
+
+  const clerkId = clerkUser?.id;
+
+  const user = useAuth(clerkId ?? "");
+  console.log(user);
   return (
     <div className="min-h-screen flex bg-[#f4f6ff]">
       <SideBar />

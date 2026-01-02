@@ -83,10 +83,10 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#f4f6ff]">
+    <div className=" flex bg-[#f4f6ff]">
       <SideBar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col relative">
         <div className="p-8">
           <h1 className="text-5xl font-bold text-gray-900">Create Classes</h1>
           <div className="mt-4 h-[2px] bg-gray-300 rounded -mx-8" />
@@ -198,15 +198,27 @@ const Page = () => {
           </Card>
         </div>
 
-        <div className="mt-6 p-6">
+        <div className="mt-32 flex flex-col items-center gap-10">
           <Button
             onClick={createClass}
-            className="bg-[#0BC2CF] text-white text-xl font-bold py-4 w-122
-                   shadow-[0_6px_0_#09AEB9] hover:bg-[#09AEB9] hover:-translate-y-1
-                   hover:shadow-[0_10px_0_#0898A3] transition-all"
+            className="bg-[#0BC2CF] text-white rounded-xl font-extrabold text-3xl
+            shadow-[0_5px_0_#088d96] hover:bg-[#0bd5e3] hover:scale-105 transition-all
+            w-[260px] h-[90px] md:w-[300px] md:h-[100px]"
           >
-            Create Class
+            Create Classroom
           </Button>
+
+          <div className="absolute bottom-0 left-0 right-0 flex justify-between items-end px-10 md:px-24 pointer-events-none">
+            <img
+              src="/wow-cool.gif"
+              className="w-[420px] h-[420px] md:w-[450px] md:h-[500px]"
+            />
+
+            <img
+              src="/penguin-safari.gif"
+              className="w-[360px] h-[360px] md:w-[500px] md:h-[530px]"
+            />
+          </div>
         </div>
       </div>
     </div>
