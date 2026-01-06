@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export const GET = async (
   req: Request,
-  context: { params: { attemptId: string } }
+  context: { params: Promise<{ attemptId: string }> }
 ) => {
   const { attemptId } = await context.params;
   try {
