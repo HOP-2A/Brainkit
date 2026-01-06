@@ -21,7 +21,7 @@ const Page = () => {
   const clerkId = clerkUser?.id;
   const { user } = useAuth(clerkId ?? "");
   const [classroom, setClassroom] = useState<ClassroomType | null>(null);
-  console.log(clerkId);
+
   const { push } = useRouter();
   const [inputValues, setInputValues] = useState({
     title: "",
@@ -55,7 +55,7 @@ const Page = () => {
     setImageUrl(uploaded.url);
     setUploading(false);
   };
-  console.log(user?.id);
+
   const createClass = async () => {
     const response = await fetch(`/api/classroom-create/${clerkId}`, {
       method: "POST",
@@ -69,7 +69,7 @@ const Page = () => {
         code: inputValues.classCode,
       }),
     });
-    console.log(response);
+
     if (response.ok) {
       toast.success("Classroom successfully created!");
 
@@ -83,12 +83,17 @@ const Page = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-[#f4f6ff]">
+    <div className=" flex bg-[#f4f6ff]">
       <SideBar />
 
-      <div className="flex-1 p-10">
-        <div className="flex gap-10">
-          <Card className="w-[480px] shadow-md border border-gray-200">
+      <div className="flex-1 flex flex-col relative">
+        <div className="p-8">
+          <h1 className="text-5xl font-bold text-gray-900">Create Classes</h1>
+          <div className="mt-4 h-0.5 bg-gray-300 rounded -mx-8" />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-10 px-6 md:px-8 mt-2">
+          <Card className="w-full md:w-[480px] shadow-md border border-gray-200">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-gray-700">
                 Cover Image (optional)
@@ -101,7 +106,7 @@ const Page = () => {
                   className="w-full h-64 object-cover rounded-xl border"
                 />
               ) : (
-                <div className="w-full h-64 border-2 border-dashed rounded-xl flex flex-col items-center justify-center bg-gray-50 text-gray-400">
+                <div className="w-full h-64 border-2 border-dashed flex flex-col items-center justify-center bg-gray-50 text-gray-400">
                   <ImageIcon className="w-12 h-12 opacity-50" />
                   <span className="text-sm mt-2">No image uploaded</span>
 
@@ -118,17 +123,17 @@ const Page = () => {
                 onClick={uploadedImg}
                 disabled={!imgFile || uploading}
                 className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white"
+                shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
+                transition-all hover:bg-blue-800"
               >
                 {uploading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
                     Uploading...
                   </>
                 ) : (
                   <>
-                    <UploadCloud className="w-4 h-4" />
+                    <UploadCloud className="w-4 h-4 mr-2" />
                     Upload Image
                   </>
                 )}
@@ -136,72 +141,85 @@ const Page = () => {
             </CardContent>
           </Card>
 
-          {/* FORM SECTION */}
-          <Card className="flex-1 shadow-md border border-gray-200 p-6 mr-20">
+          <Card className="flex-1 shadow-md border border-gray-200 p-4">
             <CardContent className="space-y-6">
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Title <label className="text-red-700">(required)</label>
+                  Title <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Enter classroom title"
                   value={inputValues.title}
                   name="title"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
 
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Description{" "}
-                  <label className="text-gray-600">(optional)</label>
+                  Description <span className="text-gray-600">(optional)</span>
                 </label>
                 <Input
                   placeholder="Enter a classroom description"
                   value={inputValues.description}
                   name="description"
                   onChange={hangleInputs}
-                  className="mt-1 h-15 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
 
               <div>
                 <label className="text-2xl text-gray-700 font-bold">
-                  Class Name <label className="text-red-700">(required)</label>
+                  Class Name <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Enter class name"
                   value={inputValues.className}
                   name="className"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
 
               <div>
-                <label className="text-2xl text-gray-700 font-bold ">
-                  Class Code <label className="text-red-700">(required)</label>
+                <label className="text-2xl text-gray-700 font-bold">
+                  Class Code <span className="text-red-700">(required)</span>
                 </label>
                 <Input
                   placeholder="Create a join code for your class"
                   value={inputValues.classCode}
                   name="classCode"
                   onChange={hangleInputs}
-                  className="mt-1 h-10 border-solid border-gray-200 border-3"
+                  className="mt-1 h-10 border border-gray-200 rounded"
                 />
               </div>
             </CardContent>
           </Card>
         </div>
-        <Button
-          onClick={createClass}
-          className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white mt-20"
-        >
-          Create Classroom
-        </Button>
+
+        <div className="mt-32 flex flex-col items-center gap-10">
+          <Button
+            onClick={createClass}
+            className="bg-[#0BC2CF] text-white rounded-xl font-extrabold text-3xl
+            shadow-[0_5px_0_#088d96] hover:bg-[#0bd5e3] hover:scale-105 transition-all
+            w-[260px] h-[90px] md:w-[300px] md:h-[100px]"
+          >
+            Create Classroom
+          </Button>
+
+          <div className="absolute bottom-0 left-0 right-0 flex justify-between items-end px-10 md:px-24 pointer-events-none">
+            <img
+              src="/wow-cool.gif"
+              className="w-[420px] h-[420px] md:w-[450px] md:h-[500px]"
+            />
+
+            <img
+              src="/penguin-safari.gif"
+              className="w-[360px] h-[360px] md:w-[500px] md:h-[530px]"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

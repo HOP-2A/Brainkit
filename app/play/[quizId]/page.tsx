@@ -40,7 +40,6 @@ export default function Page() {
   const { user } = useAuth(clerkId ?? "");
   const studentId = user?.id;
 
-  console.log("Student ID:", studentId);
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [timer, setTimer] = useState(0);
   const [count, setCount] = useState(0);
@@ -105,7 +104,6 @@ export default function Page() {
       setScore((prev) => prev + 1);
     }
 
-   
     goToNextQuestion();
 
     setAnswered(false);
@@ -115,7 +113,6 @@ export default function Page() {
   const goToNextQuestion = () => {
     if (!quiz) return;
 
-  
     if (count + 1 >= quiz.questions.length) {
       setFinished(true);
       fetchQuizResult();
@@ -123,7 +120,6 @@ export default function Page() {
       return;
     }
 
- 
     const next = count + 1;
     setCount(next);
     setTimer(quiz.questions[next].timer);
@@ -136,7 +132,7 @@ export default function Page() {
       setTimer((t) => {
         if (t <= 1) {
           clearInterval(interval);
-          goToNextQuestion(); 
+          goToNextQuestion();
           return 0;
         }
         return t - 1;
@@ -152,7 +148,6 @@ export default function Page() {
     setQuizResult(data);
   };
 
-  console.log(attemptId, "a");
   if (pageLoading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -164,7 +159,6 @@ export default function Page() {
 
   if (!question) return null;
 
-  console.log(quizResult);
   return (
     <div className="h-screen flex flex-col bg-gray-50 p-4">
       <div className="h-12 bg-purple-600 flex items-center justify-between px-4 rounded-lg">

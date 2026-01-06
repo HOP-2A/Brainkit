@@ -1,12 +1,15 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { DialogTrigger } from "@radix-ui/react-dialog";
-import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-
+import StudentSideBar from "../../_components/StudentSideBar";
 type Classroom = {
   id: string;
   title: string;
@@ -28,12 +31,13 @@ type Quiz = {
 const Page = () => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [classroom, setClassroom] = useState<Classroom | null>(null);
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
-
   const params = useParams();
   const classroomId = params.classroomID as string;
   const router = useRouter();
+
+  const [openQuizId, setOpenQuizId] = useState<string | null>(null);
+  const [codeMap, setCodeMap] = useState<{ [key: string]: string }>({});
+  const [errorMap, setErrorMap] = useState<{ [key: string]: string }>({});
 
   const GetClass = async () => {
     try {
@@ -52,80 +56,90 @@ const Page = () => {
     if (classroomId) GetClass();
   }, [classroomId]);
 
+  const handleCodeChange = (quizId: string, value: string) => {
+    setCodeMap((prev) => ({ ...prev, [quizId]: value }));
+    setErrorMap((prev) => ({ ...prev, [quizId]: "" }));
+  };
+
+  const handleJoin = (quiz: Quiz) => {
+    if (codeMap[quiz.id] === quiz.code) {
+      router.push(`/play/${quiz.id}`);
+    } else {
+      setErrorMap((prev) => ({ ...prev, [quiz.id]: "Invalid code" }));
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      {classroom && (
-        <div className="mb-8 rounded-xl bg-white p-6 shadow-md border border-gray-200">
-          <h1 className="text-3xl font-bold text-gray-900">
-            {classroom.title}
-          </h1>
-          <p className="text-sm text-gray-500 mt-2">{classroom.description}</p>
+    <div className="min-h-screen flex bg-gray-100">
+      <StudentSideBar />
+
+      <div className="flex-1 flex flex-col">
+        <div className="p-8">
+          <h1 className="text-5xl font-bold text-gray-900">My Classes</h1>
+          <div className="mt-4 h-0.5 bg-gray-300 rounded -mx-8" />
         </div>
-      )}
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {quizzes.length > 0 ? (
-          quizzes.map((q) => (
+        <div className="p-8 pt-0">
+          {classroom && (
             <div
-              key={q.id}
-              className="flex flex-col rounded-xl border bg-white p-5 shadow hover:shadow-lg transition duration-300"
+              className="mb-6 rounded-xl bg-background p-5 shadow flex
+             flex-col items-center border-2 border-[#9a49aa]"
             >
-              <div className="text-xl font-semibold text-gray-900">
-                {q.title}
-              </div>
-              <p className="text-sm text-gray-500 mt-1 line-clamp-2">
-                {q.description}
+              <h1 className="text-2xl font-bold">{classroom.title}</h1>
+              <p className="text-sm text-muted-foreground mt-1">
+                {classroom.description}
               </p>
+            </div>
+          )}
 
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button size="sm" className="mt-4 w-full">
-                    Play
-                  </Button>
-                </DialogTrigger>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {quizzes.length > 0 ? (
+              quizzes.map((q) => (
+                <div
+                  key={q.id}
+                  className="group rounded-2xl border bg-white p-6 shadow-sm
+                   transition-all duration-300
+                   hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <h2 className="text-xl font-bold text-gray-900 group-hover:text-primary transition">
+                    {q.title}
+                  </h2>
 
-                <DialogContent className="max-w-sm">
-                  <DialogHeader>
-                    <strong className="text-lg text-gray-900">
-                      Play {q.title}
-                    </strong>
-                  </DialogHeader>
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-2">
+                    {q.description}
+                  </p>
 
-                  <Input
-                    placeholder={`Enter ${q.title} code...`}
-                    value={code}
-                    onChange={(e) => {
-                      setCode(e.target.value);
-                      setError("");
-                    }}
-                    className="mt-3"
-                  />
-
-                  {error && (
-                    <p className="text-sm text-red-500 mt-1">{error}</p>
-                  )}
-
-                  <Button
-                    className="mt-4 w-full"
-                    onClick={() => {
-                      if (code === q.code) {
-                        router.push(`/play/${q.id}`);
-                      } else {
-                        setError("Invalid code");
+                  <Dialog
+                    open={openQuizId === q.id}
+                    onOpenChange={(open) => {
+                      setOpenQuizId(open ? q.id : null);
+                      if (!open) {
+                        setCodeMap((prev) => ({ ...prev, [q.id]: "" }));
+                        setErrorMap((prev) => ({ ...prev, [q.id]: "" }));
                       }
                     }}
                   >
-                    Join
-                  </Button>
-                </DialogContent>
-              </Dialog>
-            </div>
-          ))
-        ) : (
-          <div className="col-span-full text-center text-gray-400">
-            No quiz yet.
+                    <DialogTrigger asChild>
+                      <Button
+                        onClick={() => router.push(`/students/play`)}
+                        size="sm"
+                        className="mt-5 w-full rounded-xl
+                         bg-[#0BC2CF] text-white
+                         hover:bg-[#09a9b4] transition"
+                      >
+                        ▶ Play
+                      </Button>
+                    </DialogTrigger>
+                  </Dialog>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full text-center text-gray-400 text-lg">
+                No quiz yet.
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

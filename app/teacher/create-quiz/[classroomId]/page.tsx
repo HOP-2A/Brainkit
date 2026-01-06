@@ -204,14 +204,19 @@ const Page = () => {
   useEffect(() => {
     if (classroomId) GetClass();
   }, [classroomId]);
-  console.log(classroom);
+
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen flex bg-[#f4f6ff]">
       <SideBar />
 
-      <main className="flex-1 p-10 space-y-10">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          <div className="w-full md:w-80 border shadow-lg rounded-xl bg-white overflow-hidden">
+      <div className="flex-1 flex flex-col p-8">
+        <div className="mb-6">
+          <h1 className="text-5xl font-bold text-gray-900">Create Quiz</h1>
+          <div className="mt-4 h-[2px] bg-gray-300 rounded -mx-8" />
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-10">
+          <div className="md:w-80 bg-white rounded-xl shadow-lg overflow-hidden">
             {classroom?.coverImg ? (
               <img
                 src={classroom.coverImg}
@@ -219,31 +224,28 @@ const Page = () => {
                 className="w-full h-48 object-cover"
               />
             ) : (
-              <div className="w-full h-48 bg-blue-500 flex justify-center items-center text-white text-3xl font-bold">
+              <div className="w-full h-48 bg-[#0BC2CF] flex items-center justify-center text-white text-3xl font-bold">
                 BRAINKET
               </div>
             )}
 
-            <div className="p-4 space-y-2">
-              <h2 className="text-xl font-semibold">{classroom?.title}</h2>
-              <p className="text-gray-600 text-sm">{classroom?.description}</p>
+            <div className="p-4 space-y-2 justify-center">
+              <h2 className="text-xl font-bold">{classroom?.title}</h2>
+              <p className="text-gray-500 text-sm">{classroom?.description}</p>
             </div>
-          </div>
 
-          <div className="flex-1 flex flex-col gap-6">
-            <div className="flex gap-4 flex-wrap items-center">
-              <div className="w-40 h-12 bg-white shadow-md rounded-xl flex items-center justify-center font-bold text-lg">
-                {quizzes?.length ?? 0} Quizzes
+            <div className="flex flex-col gap-4 p-4">
+              <div className="bg-white border-2 border-[#0BC2CF] rounded-xl text-center py-4 font-semibold">
+                Class has {quizzes?.length ?? 0} quizzes
               </div>
 
               <Dialog>
-                <DialogTrigger className="mb-2 w-40 bg-[#5B3FFF] text-white rounded-xl font-bold text-lg py-2 px-2 flex items-center justify-center gap-2 shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF] hover:-translate-y-1 active:translate-y-1 transition-all">
+                <DialogTrigger className="w-full bg-[#0BC2CF] text-white font-bold rounded-xl py-3 flex items-center justify-center gap-2 transition-all duration-200 hover:bg-[#09AEB9] hover:scale-105">
                   <UploadCloud className="w-5 h-5" /> Add Quiz
                 </DialogTrigger>
-
                 <DialogContent className="space-y-6">
                   <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold">
+                    <DialogTitle className="text-4xl font-bold">
                       Quiz Creator
                     </DialogTitle>
                   </DialogHeader>
@@ -257,7 +259,6 @@ const Page = () => {
                         onChange={(e) => setTitle(e.target.value)}
                       />
                     </div>
-
                     <div className="flex flex-col gap-1">
                       <label className="font-semibold">Description</label>
                       <Input
@@ -266,14 +267,15 @@ const Page = () => {
                         onChange={(e) => setDescription(e.target.value)}
                       />
                     </div>
-                    <div>
-                      <label>Code</label>
+                    <div className="flex flex-col gap-1">
+                      <label className="font-semibold">Code</label>
                       <Input
                         placeholder="Create your code..."
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                       />
                     </div>
+
                     <div className="border shadow-md p-4 rounded-xl">
                       <label className="font-semibold">Cover Image</label>
                       <CardContent className="flex flex-col gap-4 mt-2">
@@ -299,7 +301,7 @@ const Page = () => {
                         <Button
                           onClick={uploadedImg}
                           disabled={!imgFile || uploading}
-                          className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold px-5 py-2 shadow flex items-center justify-center gap-2 transition-all hover:scale-105 active:translate-y-1"
+                          className="w-full bg-[#0BC2CF] text-white font-bold rounded-xl py-3 flex items-center justify-center gap-2 transition-all duration-200 hover:bg-[#09AEB9] hover:scale-105"
                         >
                           {uploading ? (
                             <>
@@ -317,7 +319,7 @@ const Page = () => {
 
                     <Button
                       onClick={handleCreate}
-                      className="mb-6 w-40 bg-[#5B3FFF] text-white rounded-xl font-bold text-lg py-3 flex items-center justify-center gap-2 shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF] hover:-translate-y-1 active:translate-y-1 transition-all"
+                      className="w-full bg-[#0BC2CF] text-white font-bold rounded-xl py-3 flex items-center justify-center gap-2 transition-all duration-200 hover:bg-[#09AEB9] hover:scale-105"
                     >
                       <UploadCloud className="w-5 h-5" /> Create
                     </Button>
@@ -326,109 +328,49 @@ const Page = () => {
               </Dialog>
             </div>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {quizzes.map((q) => (
-            <div
-              key={q.id}
-              className="border shadow-md rounded-xl p-4 hover:shadow-lg transition-all relative bg-white"
-            >
-              {q.coverImg ? (
-                <img
-                  src={q.coverImg}
-                  className="w-full h-40 object-cover rounded-xl mb-3"
-                />
-              ) : (
-                <div className="w-full h-40 bg-gray-200 flex items-center justify-center rounded-xl mb-3 text-gray-400">
-                  No Cover Image
-                </div>
-              )}
-
-              <h3
-                className="text-lg font-bold mb-1 hover:underline cursor-pointer"
-                onClick={() => push(`/teacher/question-create/${q.id}`)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 flex-1 lg:h-[200px] ">
+            {quizzes.map((q) => (
+              <div
+                key={q.id}
+                className="border shadow-sm rounded-lg p-3 hover:shadow-md transition-all bg-white relative"
               >
-                {q.title}
-              </h3>
-              <p className="text-gray-600 text-sm">{q.description}</p>
-              <div className="absolute bottom-3 right-3 flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    handleDelete(q.id);
-                  }}
+                {q.coverImg ? (
+                  <img
+                    src={q.coverImg}
+                    className="w-full h-28 object-cover rounded-lg mb-2"
+                  />
+                ) : (
+                  <div className="w-full h-28 bg-gray-200 flex items-center justify-center rounded-lg mb-2 text-gray-400 text-xs">
+                    No Image
+                  </div>
+                )}
+
+                <h3
+                  className="text-sm font-semibold mb-1 hover:underline cursor-pointer"
+                  onClick={() => push(`/teacher/question-create/${q.id}`)}
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
+                  {q.title}
+                </h3>
 
-                <div className="flex items-center gap-1">
-                  <Dialog>
-                    <DialogTrigger className="h-8 w-8 hover:bg-gray-200 pl-2 rounded-lg cursor-pointer">
-                      <Pencil className="w-4 h-4 text-blue-500" />
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle className="text-center">
-                          Edit the quiz
-                        </DialogTitle>
-                        <DialogDescription className="text-gray-800">
-                          You can edit the title, description, and cover image
-                          of the quiz.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <Input
-                        placeholder="New title"
-                        value={newTitle}
-                        onChange={(e) => setNewTitle(e.target.value)}
-                      />
-                      <Input
-                        placeholder="New description"
-                        value={newDescription}
-                        onChange={(e) => setNewDescription(e.target.value)}
-                      />
+                <p className="text-gray-600 text-xs line-clamp-2">
+                  {q.description}
+                </p>
 
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleEditFile}
-                        className="mt-3 w-[70%] cursor-pointer"
-                      />
-
-                      <Button
-                        onClick={uploadedEditImg}
-                        disabled={!editImgFile || uploading}
-                        className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white"
-                      >
-                        {uploading ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <>
-                            <UploadCloud className="w-4 h-4" /> Upload Cover
-                            Image
-                          </>
-                        )}
-                      </Button>
-
-                      <Button
-                        onClick={(e) => handleEdit(q)}
-                        className="bg-[#4169E1] text-white rounded-3xl font-bold text-base sm:text-lg md:text-xl px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4
-                     shadow-[0_4px_0_#27408B] hover:scale-105 hover:shadow-[0_6px_0_#27408B] active:translate-y-1 active:shadow-[0_2px_0_#27408B]
-                     transition-all hover:bg-blue-800 hover:text-white"
-                      >
-                        Save Changes
-                      </Button>
-                    </DialogContent>
-                  </Dialog>
+                <div className="absolute bottom-2 right-2">
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    onClick={() => handleDelete(q.id)}
+                  >
+                    <Trash2 className="w-3 h-3 text-red-500" />
+                  </Button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
