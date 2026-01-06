@@ -5,7 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState, ChangeEvent } from "react";
 import { ImageIcon, UploadCloud, Loader2, Search } from "lucide-react";
 import { Eye } from "lucide-react";
-
+import { Spinner } from "@/components/ui/spinner";
 import {
   Card,
   CardContent,
@@ -158,45 +158,45 @@ const Page = () => {
 
   useEffect(() => {
     if (className) {
-      searchClassName();
+      const run = () => {
+        searchClassName();
+      };
+
+      run();
     }
   }, [className]);
   return (
     <div className="min-h-screen flex bg-[#f4f6ff]">
       <SideBar />
 
-      <div className="flex-1 px-12 py-10">
-        <div className="flex justify-between items-center mb-10">
-          <div className="text-4xl font-bold tracking-tight">My Classrooms</div>
+      <div className="flex-1 p-8">
+        <div className="flex items-center justify-between pr-6">
+          <h1 className="text-5xl font-bold text-gray-900">My Classrooms</h1>
 
-          <div className="relative">
+          <div className="relative pr-6">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-900"
-              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              size={18}
             />
             <Input
-              placeholder="Search classrooms..."
-              className="pl-9 w-72 rounded-xl text-gray-900"
+              placeholder="Search your classrooms..."
+              className="h-12 w-64 rounded-full bg-white pl-11 pr-4 text-sm
+              border border-gray-300 shadow-sm focus:outline-none focus:ring-1
+              focus:ring-[#0BC2CF] focus:border-[#0BC2CF] placeholder:text-gray-400
+      "
               value={className}
               onChange={(e) => setClassName(e.target.value)}
             />
           </div>
         </div>
-        {/* GRID */}
+        <div className="mt-4 h-[2px] bg-gray-300 rounded -mx-8" />
+
         <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
           {classrooms.map((classroom) => (
             <Card
               key={classroom.id}
-              className="
-  rounded-xl
-  bg-white
-  border
-  shadow-sm
-  hover:shadow-xl
-  transition-all  
-  duration-300
-
-"
+              className="rounded-xl bg-white border shadow-sm hover:shadow-xl transition-all
+              duration-300 mt-9 p-0"
             >
               <div className="relative h-36 w-full">
                 {classroom.coverImg ? (
@@ -206,60 +206,42 @@ const Page = () => {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="h-full w-full bg-white flex items-center justify-center">
-                    <span className="text-gray-800 text-lg font-bold tracking-wide">
+                  <div className="relative h-40 bg-[#0BC2CF] rounded-t-xl flex items-center justify-center">
+                    <span className="text-white font-extrabold text-2xl text-center">
                       No Cover Image
                     </span>
+                    <div className="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-md flex items-center gap-1">
+                      <Eye size={14} /> {classroom.quizzes?.length || 0} Quizzes
+                    </div>
                   </div>
                 )}
-
-                <div
-                  className="
-    absolute bottom-2 left-2
-    bg-black/75
-    text-white text-xs
-    px-2 py-1
-    rounded-md
-    flex items-center gap-1
-  "
-                >
-                  <Eye size={14} /> {classroom.quizzes?.length || 0} Quizzes
-                </div>
               </div>
-
-              <div className="px-4 space-y-1">
-                <h3 className="font-semibold text-sm truncate">
+              <div className="px-3 space-y-1">
+                <h3 className="font-semibold text-3xl">
                   {classroom.name || "Untitled Classroom"}
                 </h3>
 
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-xs text-muted-foreground truncate mt-2">
                   {classroom.title || "No description"}
                 </p>
 
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[10px] text-muted-foreground mt-5">
                   Last edited • {new Date(classroom.updatedAt).toLocaleString()}
                 </p>
               </div>
-
-              {/* FOOTER */}
-              <div className="border-t px-3 py-2 flex items-center justify-between">
+              <div className="border-t-2 px-3 py-2 flex items-center justify-between">
                 <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 text-xs  cursor-pointer w-40 bg-[#5B3FFF] text-white
-            rounded-xl 
-            flex items-center justify-center gap-2
-            shadow-[0_5px_0_#3B1FCC] hover:bg-[#6A52FF]
-             hover:-translate-y-1 active:translate-y-1   
-            relative -right-2 transition-all hover:text-white"
-                  onClick={() => push(`/quiz-create/${classroom.id}`)}
+                  className="bg-[#0BC2CF] text-white font-bold py-2 px-6 mb-2
+                   shadow-[0_6px_0_#09AEB9] hover:bg-[#09AEB9] hover:-translate-y-1
+                   hover:shadow-[0_10px_0_#0898A3]"
+                  onClick={() => push(`/teacher/create-quiz/${classroom.id}`)}
                 >
-                  Quizzes
+                  Open Class
                 </Button>
 
                 <div className="flex items-center gap-1">
                   <Dialog>
-                    <DialogTrigger className="h-8 w-8 hover:bg-gray-200 pl-2 rounded-lg cursor-pointer">
+                    <DialogTrigger className="h-8 w-8 hover:bg-gray-200 pl-2 rounded-lg scale-145 cursor-pointer">
                       <Pencil size={14} />
                     </DialogTrigger>
                     <DialogContent>
@@ -330,7 +312,7 @@ const Page = () => {
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-8 w-8 text-red-500 hover:text-red-500 hover:bg-gray-200 cursor-pointer"
+                    className="h-8 w-8 text-red-500 hover:text-red-500 hover:bg-gray-200 scale-130 cursor-pointer"
                     onClick={() => deleteClass(classroom.id)}
                   >
                     <Trash size={14} />
@@ -341,11 +323,10 @@ const Page = () => {
           ))}
         </div>
 
-        {/* EMPTY STATE */}
         {classrooms.length === 0 && (
-          <p className="text-muted-foreground mt-12">
-            You haven’t created any classrooms yet.{" "}
-          </p>
+          <strong className="mt-12 flex gap-1 text-4xl justify-center">
+            Loading <Spinner className="mt-1 h-8 w-8" />
+          </strong>
         )}
       </div>
     </div>

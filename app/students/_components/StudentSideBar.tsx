@@ -2,7 +2,14 @@
 
 import { UserButton } from "@clerk/nextjs";
 import { useRouter, usePathname } from "next/navigation";
-import { Settings, Play, School, PcCase, UserRound } from "lucide-react";
+import {
+  Settings,
+  Play,
+  School,
+  PcCase,
+  UserPen,
+  UserRound,
+} from "lucide-react";
 
 export default function StudentSideBar() {
   const router = useRouter();
@@ -12,17 +19,17 @@ export default function StudentSideBar() {
     {
       name: " My class",
       icon: <PcCase className="w-5 h-5" />,
-      path: "../students/classroom",
+      path: "/students/classroom",
     },
     {
-      name: "Settings",
-      icon: <Settings className="w-5 h-5" />,
-      path: "../students/settings-page",
+      name: "Profile",
+      icon: <UserPen className="w-5 h-5" />,
+      path: "/students/settings-page",
     },
     {
       name: "Play",
       icon: <Play className="w-5 h-5" />,
-      path: "../students/play",
+      path: "/students/play",
     },
   ];
 
@@ -57,7 +64,6 @@ export default function StudentSideBar() {
           })}
         </ul>
         <div
-          onClick={() => router.push("../teacher/classroom-create")}
           className="mt-auto w-40 bg-[#0BC2CF] text-white 
           rounded-sm font-bold text-lg py-3 px-4
           flex items-center justify-center gap-2"

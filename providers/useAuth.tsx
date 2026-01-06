@@ -7,6 +7,7 @@ type TeacherType = {
   email: string;
   name: string;
   clerkId: string;
+  classRoomId: string;
 };
 
 export const useAuth = (clerkId: string | null) => {

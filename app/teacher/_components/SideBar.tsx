@@ -6,9 +6,9 @@ import {
   List,
   PenLine,
   History,
-  SquarePlus,
   Settings,
   UserRound,
+  UserPen,
 } from "lucide-react";
 
 export default function SideBar() {
@@ -27,8 +27,8 @@ export default function SideBar() {
       path: "/teacher/history",
     },
     {
-      name: "Settings",
-      icon: <Settings className="w-5 h-5" />,
+      name: "Profile",
+      icon: <UserPen className="w-5 h-5" />,
       path: "/teacher/settings-page",
     },
   ];
@@ -79,7 +79,6 @@ export default function SideBar() {
         </ul>
 
         <div
-          onClick={() => router.push("../teacher/classroom-create")}
           className="mt-auto w-40 bg-[#0BC2CF] text-white 
           rounded-sm font-bold text-lg py-3 px-4
           flex items-center justify-center gap-2"

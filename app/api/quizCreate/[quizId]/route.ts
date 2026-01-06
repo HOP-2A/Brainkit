@@ -9,12 +9,12 @@ export async function POST(req: Request) {
     else {
       await prisma.quiz.create({
         data: {
+          code,
           title,
           creatorId,
           classroomId,
           description,
           coverImg: coverImg ?? "",
-          code,
         },
       });
 
@@ -43,9 +43,7 @@ export const GET = async (
       },
       include: {
         questions: {
-          include: {
-            options: true,
-          },
+          include: { options: true },
         },
       },
     });

@@ -7,13 +7,36 @@ import { Button } from "@/components/ui/button";
 
 const Page = () => {
   const router = useRouter();
-  const { isSignedIn } = useUser();
+  const { user: clerkUser, isSignedIn, isLoaded } = useUser();
 
   useEffect(() => {
-    if (isSignedIn) {
-      router.push("/teacher/my-sets");
-    }
-  }, [isSignedIn]);
+    if (!isLoaded || !isSignedIn) return;
+
+    const roleCheck = async () => {
+      const email = clerkUser?.emailAddresses[0]?.emailAddress;
+      if (!email) return;
+
+      const res = await fetch("/api/role-check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+
+      if (data.role === "teacher") {
+        router.push("/teacher/my-sets");
+      } else if (data.role === "student") {
+        router.push("/students/classroom");
+      }
+    };
+
+    roleCheck();
+  }, [isLoaded, isSignedIn, clerkUser, router]);
 
   return (
     <div>
