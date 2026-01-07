@@ -210,10 +210,11 @@ export default function Page() {
               if (!quiz?.questions?.[0]) return;
               setTimer(quiz!.questions[0].timer);
             }}
-            className="bg-[#9a49aa] text-white text-2xl px-10 py-4 rounded-xl hover:scale-105 transition"
+            className="bg-[#9a49aa] text-white text-2xl px-10 py-4 rounded-xl hover:scale-105 transition mt-9"
           >
             Quiz эхлүүлэх
           </button>
+          <img className="pb-9" src="/Classic.png" />
         </div>
 
         <div className="fixed bottom-0 left-0 w-full h-[284px] bg-[#E6F7F8] z-0 pointer-events-none">
