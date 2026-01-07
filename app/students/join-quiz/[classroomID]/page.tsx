@@ -39,20 +39,20 @@ const Page = () => {
   const [codeMap, setCodeMap] = useState<{ [key: string]: string }>({});
   const [errorMap, setErrorMap] = useState<{ [key: string]: string }>({});
 
-  const GetClass = async () => {
-    try {
-      const res = await fetch(`/api/classroom-create/${classroomId}`);
-      if (!res.ok) return;
-
-      const data: Classroom = await res.json();
-      setClassroom(data);
-      setQuizzes(data.quizzes);
-    } catch (err) {
-      console.log("Error fetching classroom", err);
-    }
-  };
-
   useEffect(() => {
+    const GetClass = async () => {
+      try {
+        const res = await fetch(`/api/classroom-create/${classroomId}`);
+        if (!res.ok) return;
+
+        const data: Classroom = await res.json();
+        setClassroom(data);
+        setQuizzes(data.quizzes);
+      } catch (err) {
+        console.log("Error fetching classroom", err);
+      }
+    };
+
     if (classroomId) GetClass();
   }, [classroomId]);
 
@@ -121,7 +121,7 @@ const Page = () => {
                   >
                     <DialogTrigger asChild>
                       <Button
-                        onClick={() => router.push(`/students/play`)}
+                        onClick={() => router.push(`/playQuiz/${q.id}`)}
                         size="sm"
                         className="mt-5 w-full rounded-xl
                          bg-[#0BC2CF] text-white
